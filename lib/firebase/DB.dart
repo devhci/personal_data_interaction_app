@@ -17,29 +17,38 @@ class DB {
 
   }
 
-  Future<void> createNewItem(String itemName){
+  Future<void> createNewItem(String username, String itemName){
 
     HashMap<String,dynamic> map=HashMap<String,dynamic>();
 
-    map["timestemp"]= Timestamp.now() ;
+    //map["timestemp"]= Timestamp.now() ;
 
+    List dtLst = new List();
 
-    if (Firestore.instance.collection('auto-id').document(itemName).snapshots() == null) {
-      Firestore.instance.collection('auto-id').document(itemName).setData(map);
-}
+    dtLst.add(Timestamp.now());
 
-    /*Firestore.instance.collection('auto-id').document(itemName).setData(map);
-*/
+    map["timestemp"] = dtLst;
+
+   // Firestore.instance.collection('users').document(username).collection('data').document(itemName).setData(map);
+    //Firestore.instance.collection('testusers').document(itemName).setData(map);
+
+    print("Inside create");
+
+    Firestore.instance.collection('users').document(username).collection('data').document(itemName).setData(map);
+
   }
-  Future<void> deleteItem(String itemName){
+
+
+  Future<void> deleteItem(String username, String itemName){
 
     HashMap<String,dynamic> map=HashMap<String,dynamic>();
 
-    map["createdOn"]= Timestamp.now() ;
 
-    Firestore.instance.collection('auto-id').document(itemName).delete();
+    Firestore.instance.collection('users').document(username).collection('data').document(itemName).delete();
 
   }
+
+
 
   
    getData() async{
@@ -47,28 +56,35 @@ class DB {
   }
 
 
-  Future<void> remove(String documentName){
+  Future<void> remove(String username,String documentName){
 
-    final DocumentReference postRef = Firestore.instance.collection('auto-id').document(documentName);
-    Firestore.instance.runTransaction((Transaction tx) async {
-      DocumentSnapshot postSnapshot = await tx.get(postRef);
-      if (postSnapshot.data.containsKey("timestemp")) {
-        await tx.update(postRef, <String, dynamic>{'timestemp': FieldValue.arrayUnion([formatter.format(now)])});
-      }
-    });
+    final DocumentReference postRef= Firestore.instance.collection('users').document(username).collection('data').document(documentName);
 
+    //final DocumentReference postRef = Firestore.instance.collection('auto-id').document(documentName);
+
+    if(postRef!=null)
+      Firestore.instance.runTransaction((Transaction tx) async {
+        DocumentSnapshot postSnapshot = await tx.get(postRef);
+        if (postSnapshot.data.containsKey("timestemp")) {
+          await tx.update(postRef, <String, dynamic>{'timestemp': FieldValue.arrayRemove([formatter.format(now)])});
+        }
+      });
 
 
   }
 
 
-  Future<void> update(String documentName){
+  Future<void> update(String username,String documentName){
 
-    final DocumentReference postRef = Firestore.instance.collection('auto-id').document(documentName);
+    final DocumentReference postRef= Firestore.instance.collection('users').document(username).collection('data').document(documentName);
+
+    //final DocumentReference postRef = Firestore.instance.collection('auto-id').document(documentName);
+
+    if(postRef!=null)
     Firestore.instance.runTransaction((Transaction tx) async {
       DocumentSnapshot postSnapshot = await tx.get(postRef);
       if (postSnapshot.data.containsKey("timestemp")) {
-        await tx.update(postRef, <String, dynamic>{'timestemp': FieldValue.arrayRemove([formatter.format(now)])});
+        await tx.update(postRef, <String, dynamic>{'timestemp': FieldValue.arrayUnion([formatter.format(now)+545.toString()])});
       }
     });
 

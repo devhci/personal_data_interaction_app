@@ -93,13 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
-    /* Map<String, Object> data1 = new HashMap<>();
-    data1.put("name", "San Francisco");
-    data1.put("state", "CA");
-    data1.put("country", "USA");
-    data1.put("capital", false);
-    data1.put("population", 860000);
-    data1.put("regions", ;*/
+
 
     List dtLst = new List();
 
@@ -107,24 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     map["timestemp"] = dtLst;
 
-    /*Firestore Firestore.instance.runTransaction((Transaction tx) async {
-      */ /*DocumentSnapshot snapshot =
-      (await Firestore.instance
-          .collection('auto-id')
-          .snapshots()) as DocumentSnapshot;
-      var doc = snapshot.data;*/ /*
-
-      return transaction.get(userRef).then(doc => {
-      if (!doc.data().bookings) {
-      transaction.set({
-      bookings: [booking]
-      });
-      } else {
-      const bookings = doc.data().bookings;
-      bookings.push(booking);
-      transaction.update(userRef, { bookings: bookings });
-      }
-      });
+    /*
 
 
    //   DocumentReference washingtonRef = doc.doc ("cities");
@@ -156,18 +133,17 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });*/
 
-    final DocumentReference postRef = Firestore.instance.collection('auto-id').document('Social');
+  /*  final DocumentReference postRef = Firestore.instance.collection('auto-id').document('Social');
     Firestore.instance.runTransaction((Transaction tx) async {
       DocumentSnapshot postSnapshot = await tx.get(postRef);
       if (postSnapshot.data.containsKey("timestemp")) {
         await tx.update(postRef, <String, dynamic>{'timestemp': FieldValue.arrayUnion([formatter.format(now)+7.toString()])});
       }
-    });
+    });*/
 
 
     //_db.deleteItem("Social");
 
-    _db.createNewItem("Social");
 
     for (int i = 0; i < 25; i++) {
       i = i + 1;
@@ -181,6 +157,17 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     super.initState();
+  }
+
+
+   test(){
+
+    _db.createNewItem("koriawas@dtu.dk","sleep");
+    /* _db.deleteItem("koriawas@dtu.dk","morning walk");*/
+
+   // _db.update("new@dtu.dk","gym");
+
+
   }
 
   _create() async {
@@ -293,14 +280,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     FlatButton(
                       child: Text('NEXT'),
-                      onPressed: () {
+                      onPressed: test()/*() {
                         setState(() {
                           _currentDate2 = _currentDate2.add(Duration(days: 30));
                           _currentMonth =
                               DateFormat.yMMM().format(_currentDate2);
                         });
-                      },
+                      },*/
                     )
+
+
+
                   ],
                 ),
               ),

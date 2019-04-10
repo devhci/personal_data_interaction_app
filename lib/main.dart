@@ -162,11 +162,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
    test(){
 
-    _db.createNewItem("koriawas@dtu.dk","sleep");
+   /* _db.createNewItem("koriawas@dtu.dk","sleep");*/
     /* _db.deleteItem("koriawas@dtu.dk","morning walk");*/
 
    // _db.update("new@dtu.dk","gym");
 
+
+     print(_db.getData("koriawas@dtu.dk"));
 
   }
 

@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:personal_data_interaction_app/util/db_read_write.dart';
 
 class MyHomePage1 extends StatefulWidget {
   MyHomePage1({Key key, this.title}) : super(key: key);
@@ -14,6 +15,8 @@ class ClicksPerYear {
   final String year;
   final int clicks;
   final charts.Color color;
+
+
 
   ClicksPerYear(this.year, this.clicks, Color color)
       : this.color = new charts.Color(
@@ -32,10 +35,10 @@ class _MyHomePageState extends State<MyHomePage1> {
   @override
   Widget build(BuildContext context) {
     var data = [
-      new ClicksPerYear('A', 16, Colors.red),
-      new ClicksPerYear('B', 25, Colors.yellow),
-      new ClicksPerYear('C', 30, Colors.yellow),
-      new ClicksPerYear('D', 19, Colors.yellow),
+      new ClicksPerYear('Sleep', 16, Colors.red),
+      new ClicksPerYear('Gym', 25, Colors.yellow),
+      new ClicksPerYear('Food', 30, Colors.yellow),
+      new ClicksPerYear('Cloths', 19, Colors.yellow),
       new ClicksPerYear('E', _counter, Colors.green),
     ];
 

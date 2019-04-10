@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "263256976041",
+    "firebase_url": "https://personal-data-informatics.firebaseio.com",
+    "project_id": "personal-data-informatics",
+    "storage_bucket": "personal-data-informatics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263256976041:android:ef58ba917c4c74b7",
+        "android_client_info": {
+          "package_name": "com.example.personal_data_interaction_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263256976041-gk58el38puo138p21rq2dcfkogp9g36p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI5OnqFBCRV_ihIdEJQJ964ugaiHMN2Ic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263256976041-gk58el38puo138p21rq2dcfkogp9g36p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263256976041:android:1569ec2047fdb93d",
+        "android_client_info": {
+          "package_name": "dk.company.recipes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263256976041-gk58el38puo138p21rq2dcfkogp9g36p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI5OnqFBCRV_ihIdEJQJ964ugaiHMN2Ic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263256976041-gk58el38puo138p21rq2dcfkogp9g36p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

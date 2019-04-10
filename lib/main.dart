@@ -1,3 +1,6 @@
+import 'dart:collection';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -5,7 +8,14 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
-import 'package:personal_data_interaction_app/per_item.dart';
+import 'package:personal_data_interaction_app/firebase/DB.dart';
+
+import 'package:personal_data_interaction_app/util/db_read_write.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:path_provider/path_provider.dart';
 
 void main() => runApp(new MyApp());
 
@@ -26,7 +36,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage1(title: 'Montly Viz'),
+      home: new MyHomePage(title: 'Montlhy Viz'),
     );
   }
 }
@@ -47,14 +57,10 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => new _MyHomePageState();
-
-
-
-
-
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  DB _db = DB();
   DateTime _currentDate = DateTime(2019, 2, 3);
   DateTime _currentDate2 = DateTime(2019, 2, 3);
   String _currentMonth = '';
@@ -64,13 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Colors.red.withOpacity(0.5),
         borderRadius: BorderRadius.all(Radius.circular(1500)),
         border: Border.all(color: Colors.blue, width: 0.5)),
-
   );
 
   EventList<Event> _markedDateMap = new EventList<Event>(
-    events: {
-
-    },
+    events: {},
   );
 
   CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
@@ -81,23 +84,131 @@ class _MyHomePageState extends State<MyHomePage> {
     ///
     ///
 
-    for(int i=0;i<25;i++) {
-      i=i+1;
+    ///
+
+    Firestore.instance
+        .collection('auto-id')
+        .snapshots()
+        .listen((data) => data.documents.forEach((doc) => print(doc)));
+
+    HashMap<String, dynamic> map = HashMap<String, dynamic>();
+
+    /* Map<String, Object> data1 = new HashMap<>();
+    data1.put("name", "San Francisco");
+    data1.put("state", "CA");
+    data1.put("country", "USA");
+    data1.put("capital", false);
+    data1.put("population", 860000);
+    data1.put("regions", ;*/
+
+    List dtLst = new List();
+
+    dtLst.add(Timestamp.now());
+
+    map["timestemp"] = dtLst;
+
+    /*Firestore Firestore.instance.runTransaction((Transaction tx) async {
+      */ /*DocumentSnapshot snapshot =
+      (await Firestore.instance
+          .collection('auto-id')
+          .snapshots()) as DocumentSnapshot;
+      var doc = snapshot.data;*/ /*
+
+      return transaction.get(userRef).then(doc => {
+      if (!doc.data().bookings) {
+      transaction.set({
+      bookings: [booking]
+      });
+      } else {
+      const bookings = doc.data().bookings;
+      bookings.push(booking);
+      transaction.update(userRef, { bookings: bookings });
+      }
+      });
+
+
+   //   DocumentReference washingtonRef = doc.doc ("cities");
+
+      if (doc['Social'].contains("timestemp")) {
+        await tx.update(snapshot.reference, <String, dynamic>{
+          'timestemp': FieldValue.arrayUnion(["A","B"])
+        });
+
+      }
+    });*/
+
+    HashMap<String, dynamic> update = HashMap<String, dynamic>();
+    update["timestemp"] = dtLst;
+
+    //print(Firestore.instance.collection('auto-id').document("Social").setData(update,merge: true));
+
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+
+  /*  final DocumentReference postRef =
+        Firestore.instance.collection('auto-id').document('Social');
+    Firestore.instance.runTransaction((Transaction tx) async {
+      DocumentSnapshot postSnapshot = await tx.get(postRef);
+      if (postSnapshot.data.containsKey("timestemp")) {
+        await tx.update(postRef, <String, dynamic>{
+          'timestemp': FieldValue.arrayRemove([formatter.format(now)])
+        });
+      }
+    });*/
+
+    final DocumentReference postRef = Firestore.instance.collection('auto-id').document('Social');
+    Firestore.instance.runTransaction((Transaction tx) async {
+      DocumentSnapshot postSnapshot = await tx.get(postRef);
+      if (postSnapshot.data.containsKey("timestemp")) {
+        await tx.update(postRef, <String, dynamic>{'timestemp': FieldValue.arrayUnion([formatter.format(now)+7.toString()])});
+      }
+    });
+
+
+    //_db.deleteItem("Social");
+
+    _db.createNewItem("Social");
+
+    for (int i = 0; i < 25; i++) {
+      i = i + 1;
       _markedDateMap.add(
-          new DateTime( 2019, 2, 3+i ),
+          new DateTime(2019, 2, 3 + i),
           new Event(
-            date: new DateTime( 2019, 2, 3+i ),
+            date: new DateTime(2019, 2, 3 + i),
             title: 'Event 5',
             icon: _eventIcon,
-          ) );
+          ));
     }
 
     super.initState();
   }
 
+  _create() async {
+    var file = new File('db.json');
+
+    file.writeAsString("contents");
+  }
+
+  Future<String> _read() async {
+    _create();
+    String text;
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+
+      final file = File('${directory.path}/db.json');
+      text = await file.readAsString();
+
+      print("text" + text);
+    } catch (e) {
+      final directory = await getApplicationDocumentsDirectory();
+      print("directory=" '${directory.path}/');
+      print("Couldn't read file");
+    }
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
-
     /// Example Calendar Carousel without header and custom prev & next button
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       todayBorderColor: Colors.green,
@@ -117,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
       markedDateShowIcon: true,
       markedDateIconMaxShown: 2,
       markedDateMoreShowTotal:
-      false, // null for not showing hidden events indicator
+          false, // null for not showing hidden events indicator
       showHeader: false,
       markedDateIconBuilder: (event) {
         return event.icon;
@@ -163,12 +274,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     Expanded(
                         child: Text(
-                          _currentMonth,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0,
-                          ),
-                        )),
+                      _currentMonth,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      ),
+                    )),
                     FlatButton(
                       child: Text('PREV'),
                       onPressed: () {

@@ -16,7 +16,7 @@ class DB {
 
     List dtLst = new List();
 
-    dtLst.add(Timestamp.now());
+    dtLst.add(formatter.format(now));
 
     map["timestemp"] = dtLst;
 
@@ -44,8 +44,8 @@ class DB {
         .delete();
   }
 
-  Future<dynamic> getData(String username) async {
-    return Firestore.instance.collection("users").document(username).collection("data").getDocuments().then(onValue);
+  Future<QuerySnapshot> getData(String username) async {
+    return Firestore.instance.collection("users").document(username).collection("data").getDocuments();//  .then(onValue);
   }
 
 
@@ -107,7 +107,7 @@ class DB {
         if (postSnapshot.data.containsKey("timestemp")) {
           await tx.update(postRef, <String, dynamic>{
             'timestemp':
-                FieldValue.arrayUnion([formatter.format(now) + 63257943118328.toString()])
+                FieldValue.arrayUnion([formatter.format(now) + 63257.toString()])
           });
         }
       });

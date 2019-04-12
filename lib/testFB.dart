@@ -11,24 +11,20 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:personal_data_interaction_app/firebase/DB.dart';
 
-class TestClass  extends StatelessWidget{
+class TestClass extends StatelessWidget {
+  HashMap<String, String> itemsWithCount = HashMap<String, String>();
 
+  List<HashMap<String, String>> list = List();
 
   DB _db = DB();
 
-
-
-  void test(){
-
-
+  void test() {
     Firestore.instance
         .collection('auto-id')
         .snapshots()
         .listen((data) => data.documents.forEach((doc) => print(doc)));
 
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
-
-
 
     List dtLst = new List();
 
@@ -38,61 +34,65 @@ class TestClass  extends StatelessWidget{
 
     print("test clicked");
 
-
-   //_db.createNewItem("koriawas@dtu.dk","criket");
+    //_db.createNewItem("koriawas@dtu.dk","criket");
     _db.update("koriawas@dtu.dk", "criket");
-    _db.getData("koriawas@dtu.dk");
 
+    _db.getData("koriawas@dtu.dk").then(onValue);
 
     /* _db.createNewItem("koriawas@dtu.dk","sleep");*/
     /* _db.deleteItem("koriawas@dtu.dk","morning walk");*/
 
     // _db.update("new@dtu.dk","gym");
-
-
-
   }
 
+  void onValue(QuerySnapshot value) {
+    //value.documents.single.exists;
 
+    print("last " + value.documents.length.toString());
 
+    for (var u in value.documents) {
+      HashMap<String, String> items = HashMap<String, String>();
 
+      items["name"] = u.documentID;
+
+      int count = 0;
+
+      for (var value in u.data.remove("timestemp")) {
+        //print(value);
+
+        count++;
+      }
+
+      items["count"] = count.toString();
+
+      list.add(items);
+    }
+
+    for (var u in list) {
+      print(u.remove("name") );
+      print(u.remove("count"));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return  Scaffold(
-
+    return Scaffold(
       appBar: AppBar(
         title: Text("Testing Firebase"),
-
       ),
-
       body: Center(
-
         child: Container(
-
           child: Text(" Hello"),
-
-
-
-
+        ),
       ),
-
-
-
-    ),
-
-
       floatingActionButton: FloatingActionButton(
-        onPressed:()=> test(),
-        child: Icon(Icons.add,),
+        onPressed: () => test(),
+        child: Icon(
+          Icons.add,
+        ),
         mini: true,
       ),
-
     );
   }
-
-
-
-
 }

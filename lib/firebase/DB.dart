@@ -45,32 +45,25 @@ class DB {
   }
 
   Future<QuerySnapshot> getData(String username) async {
-    return Firestore.instance.collection("users").document(username).collection("data").getDocuments();//  .then(onValue);
+    return Firestore.instance
+        .collection("users")
+        .document(username)
+        .collection("data")
+        .getDocuments(); //  .then(onValue);
   }
 
-
-  void onValue(QuerySnapshot value){
-
+  void onValue(QuerySnapshot value) {
     //value.documents.single.exists;
+    print("last " + value.documents.length.toString());
 
-
-    print("last " +value.documents.length.toString());
-
-
-    for( var u in value.documents )
-
-      {
-        print("Document Id "+u.documentID +" "+u.data.remove("timestemp").toString());
-
-
-      }
-      // print("last" +value.documents.removeAt(-1).data.toString());
-
-
-
+    for (var u in value.documents) {
+      print("Document Id " +
+          u.documentID +
+          " " +
+          u.data.remove("timestemp").toString());
+    }
+    // print("last" +value.documents.removeAt(-1).data.toString());
   }
-
-
 
   Future<void> remove(String username, String documentName) {
     final DocumentReference postRef = Firestore.instance
@@ -106,8 +99,8 @@ class DB {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.data.containsKey("timestemp")) {
           await tx.update(postRef, <String, dynamic>{
-            'timestemp':
-                FieldValue.arrayUnion([formatter.format(now) + 63257.toString()])
+            'timestemp': FieldValue.arrayUnion(
+                [formatter.format(now) + 63257.toString()])
           });
         }
       });

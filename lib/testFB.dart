@@ -18,6 +18,7 @@ class TestClass extends StatelessWidget {
 
   DB _db = DB();
 
+
   void test() {
     Firestore.instance
         .collection('auto-id')
@@ -69,7 +70,7 @@ class TestClass extends StatelessWidget {
     }
 
     for (var u in list) {
-      print(u.remove("name") );
+      print(u.remove("name"));
       print(u.remove("count"));
     }
   }
@@ -86,12 +87,42 @@ class TestClass extends StatelessWidget {
           child: Text(" Hello"),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => test(),
-        child: Icon(
-          Icons.add,
-        ),
-        mini: true,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+
+        children: <Widget>[
+          FloatingActionButton(
+            onPressed: () => test(),
+            child: Icon(
+              Icons.add,
+            ),
+            mini: false,
+          ),
+          FloatingActionButton(
+            onPressed: () => test(),
+            child: Icon(
+              Icons.update,
+            ),
+
+          ),
+
+    FloatingActionButton(
+    onPressed: () => test(),
+    child: Icon(
+    Icons.remove,
+    ),
+
+    ),
+FloatingActionButton(
+    onPressed: () => test(),
+    child: Icon(
+    Icons.calendar_today,
+    ),
+
+    ),
+
+
+        ],
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:personal_data_interaction_app/firebase/DB.dart';
+import 'package:personal_data_interaction_app/testFB.dart';
 
 import 'package:personal_data_interaction_app/util/db_read_write.dart';
 import 'package:flutter/foundation.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Montlhy Viz'),
+      home: new TestClass()
     );
   }
 }
@@ -162,13 +163,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
    test(){
 
-   /* _db.createNewItem("koriawas@dtu.dk","sleep");*/
-    /* _db.deleteItem("koriawas@dtu.dk","morning walk");*/
-
-   // _db.update("new@dtu.dk","gym");
 
 
-     print(_db.getData("koriawas@dtu.dk"));
 
   }
 

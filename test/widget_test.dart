@@ -33,7 +33,7 @@ void main() {
 
     DB _db= DB();
 
-    _db.createNewItem("swim");
+    _db.createNewItem("dk@dtu.dk","swim");
 
 
   });

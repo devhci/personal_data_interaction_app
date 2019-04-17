@@ -10,13 +10,12 @@ class DB {
   List<String> dates = List<String>();
   List<HashMap<String, String>> list = List();
 
-
   Future<dynamic> getDoc() {}
 
   Future<void> createNewItem(String username, String itemName) {
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
-    map["timestemp"]= Timestamp.now() ;
+    map["timestemp"] = Timestamp.now();
 
     List dtLst = new List();
 
@@ -53,32 +52,30 @@ class DB {
         .collection("users")
         .document(username)
         .collection("data")
-        .getDocuments().then(onValue); //  .then(onValue);
+        .getDocuments()
+        .then(onValue); //  .then(onValue);
 
     return list;
-
   }
 
-
-  Future<List<String>> getDatesFor(String username,String itemName) async {
+  Future<List<String>> getDatesFor(String username, String itemName) async {
     Firestore.instance
         .collection("users")
         .document(username)
-        .collection("data").document(itemName).snapshots().forEach((doc) => {
-        doc.data.remove("timestemp").forEach((v) => {
+        .collection("data")
+        .document(itemName)
+        .snapshots()
+        .forEach((doc) => {
+              doc.data.remove("timestemp").forEach((v) => {dates.add(v)})
+            });
 
-          dates.add(v)})
-   });
+    return dates;
 
-     return dates;
-
-     //  .then(onValue);
+    //  .then(onValue);
   }
 
   void onValue(QuerySnapshot value) {
     //value.documents.single.exists;
-
-    print("last " + value.documents.length.toString());
 
     for (var u in value.documents) {
       HashMap<String, String> items = HashMap<String, String>();
@@ -98,10 +95,10 @@ class DB {
       list.add(items);
     }
 
-    for (var u in list) {
+    /* for (var u in list) {
       print(u.remove("name"));
       print(u.remove("count"));
-    }
+    }*/
   }
 
   Future<void> remove(String username, String documentName) {
@@ -138,8 +135,7 @@ class DB {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.data.containsKey("timestemp")) {
           await tx.update(postRef, <String, dynamic>{
-            'timestemp': FieldValue.arrayUnion(
-                [formatter.format(now) ])
+            'timestemp': FieldValue.arrayUnion([formatter.format(now)])
           });
         }
       });

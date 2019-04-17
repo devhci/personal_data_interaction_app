@@ -13,10 +13,9 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:personal_data_interaction_app/firebase/DB.dart';
 
 class TestClass extends StatelessWidget {
-
   HashMap<String, String> itemsWithCount = HashMap<String, String>();
 
- /* List<HashMap<String, String>> list = List();*/
+  /* List<HashMap<String, String>> list = List();*/
 
   DB _db = DB();
 
@@ -36,10 +35,8 @@ class TestClass extends StatelessWidget {
     _db.deleteItem("koriawas@dtu.dk", "Playing football");
   }
 
-  void listAllForAMonth() async{
-
-
-    List<HashMap<String, String>> list=  await _db.getData("koriawas@dtu.dk");
+  void listAllForAMonth() async {
+    List<HashMap<String, String>> list = await _db.getData("koriawas@dtu.dk");
 
     for (var u in list) {
       print(u.remove("name"));
@@ -48,17 +45,12 @@ class TestClass extends StatelessWidget {
   }
 
   void giveListOfDateForCalenderVisualization() async {
-    List<String> dates = await _db.getDatesFor(
-        "koriawas@dtu.dk", "Playing football" );
-    for(var u in dates){
-
+    List<String> dates =
+        await _db.getDatesFor("koriawas@dtu.dk", "Playing football");
+    for (var u in dates) {
       print(u);
     }
-
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {

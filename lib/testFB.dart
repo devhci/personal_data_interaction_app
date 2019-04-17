@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -12,98 +13,52 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:personal_data_interaction_app/firebase/DB.dart';
 
 class TestClass extends StatelessWidget {
+
   HashMap<String, String> itemsWithCount = HashMap<String, String>();
 
-  List<HashMap<String, String>> list = List();
+ /* List<HashMap<String, String>> list = List();*/
 
   DB _db = DB();
 
-
-  void add()
-  {
-
-
+  void add() {
     _db.update("koriawas@dtu.dk", "Playing football");
-
-
   }
 
-
-  void remove(){
-
+  void remove() {
     _db.remove("koriawas@dtu.dk", "Playing football");
-
   }
 
-  void create(){
-
-
+  void create() {
     _db.createNewItem("koriawas@dtu.dk", "Playing football");
-
-
   }
 
-
-  void deleteItem(){
-
+  void deleteItem() {
     _db.deleteItem("koriawas@dtu.dk", "Playing football");
-
-  }
-  void listAllForAMonth() {
-    Firestore.instance
-        .collection('auto-id')
-        .snapshots()
-        .listen((data) => data.documents.forEach((doc) => print(doc)));
-
-    HashMap<String, dynamic> map = HashMap<String, dynamic>();
-
-    List dtLst = new List();
-
-    dtLst.add(Timestamp.now());
-
-    map["timestemp"] = dtLst;
-
-    print("test clicked");
-
-    //_db.createNewItem("koriawas@dtu.dk","criket");
-   // _db.update("koriawas@dtu.dk", "criket");
-
-    _db.getData("koriawas@dtu.dk").then(onValue);
-
-    /* _db.createNewItem("koriawas@dtu.dk","sleep");*/
-    /* _db.deleteItem("koriawas@dtu.dk","morning walk");*/
-
-    // _db.update("new@dtu.dk","gym");
   }
 
-  void onValue(QuerySnapshot value) {
-    //value.documents.single.exists;
+  void listAllForAMonth() async{
 
-    print("last " + value.documents.length.toString());
 
-    for (var u in value.documents) {
-      HashMap<String, String> items = HashMap<String, String>();
-
-      items["name"] = u.documentID;
-
-      int count = 0;
-
-      for (var value in u.data.remove("timestemp")) {
-        //print(value);
-
-        count++;
-      }
-
-      items["count"] = count.toString();
-
-      list.add(items);
-    }
+    List<HashMap<String, String>> list=  await _db.getData("koriawas@dtu.dk");
 
     for (var u in list) {
       print(u.remove("name"));
       print(u.remove("count"));
     }
   }
+
+  void giveListOfDateForCalenderVisualization() async {
+    List<String> dates = await _db.getDatesFor(
+        "koriawas@dtu.dk", "Playing football" );
+    for(var u in dates){
+
+      print(u);
+    }
+
+
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +74,6 @@ class TestClass extends StatelessWidget {
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-
         children: <Widget>[
           FloatingActionButton(
             onPressed: () => add(),
@@ -133,31 +87,31 @@ class TestClass extends StatelessWidget {
             child: Icon(
               Icons.remove,
             ),
-
           ),
-
-    FloatingActionButton(
-    onPressed: () => create(),
-    child: Icon(
-    Icons.create,
-    ),
-
-    ),
-FloatingActionButton(
-    onPressed: () => deleteItem(),
-    child: Icon(
-    Icons.delete,
-    ),
-
-    ),
+          FloatingActionButton(
+            onPressed: () => create(),
+            child: Icon(
+              Icons.create,
+            ),
+          ),
+          FloatingActionButton(
+            onPressed: () => deleteItem(),
+            child: Icon(
+              Icons.delete,
+            ),
+          ),
           FloatingActionButton(
             onPressed: () => listAllForAMonth(),
             child: Icon(
               Icons.list,
             ),
-
           ),
-
+          FloatingActionButton(
+            onPressed: () => giveListOfDateForCalenderVisualization(),
+            child: Icon(
+              Icons.calendar_view_day,
+            ),
+          ),
         ],
       ),
     );

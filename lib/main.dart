@@ -1,6 +1,3 @@
-import 'dart:collection';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
@@ -11,6 +8,7 @@ import 'package:intl/intl.dart' show DateFormat;
 
 import 'package:personal_data_interaction_app/firebase/DB.dart';
 import 'package:personal_data_interaction_app/testFB.dart';
+
 import 'package:personal_data_interaction_app/util/util.dart';
 
 void main() => runApp(new MyApp());
@@ -23,8 +21,8 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Flutter Calendar Carousel Example'),
-      // home: new TestClass(),
+      // home: new MyHomePage(title: 'Flutter Calendar Carousel Example'),
+      home: new TestClass(),
     );
   }
 }
@@ -70,101 +68,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    /*
-*/
+    util.giveListOfDateForCalenderVisualization().then((list) {
+      print("inside listDate" + list.toString());
 
-    util.giveListOfDateForCalenderVisualization().then((list){
-
-      print("inside listDate"+ list.toString());
-
-
-      for(var v in list){
-
+      for (var v in list) {
         var formatter = new DateFormat('yyyy-MM-dd');
 
-        print ( v );
+        print(v);
 
-        List<String> date=   v.toString().split("-");
+        List<String> date = v.toString().split("-");
 
+        print(date[0] + " " + date[1] + " " + date[2]);
 
-        print(date[0]+" "+date[1]+" "+ date[2]);
-
-
-setState(() {
-  _markedDateMap.add(
-      new DateTime(int.parse(date[0]),int.parse(date[1]),int.parse(date[2])),
-      new Event(
-        date:  new DateTime(int.parse(date[0]),int.parse(date[1]),int.parse(date[2])),
-        title: 'Event 5',
-        icon: _eventIcon,
-      ));
-});
-
+        setState(() {
+          _markedDateMap.add(
+              new DateTime(
+                  int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
+              new Event(
+                date: new DateTime(
+                    int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
+                title: 'Event 5',
+                icon: _eventIcon,
+              ));
+        });
       }
-
-
     });
 
-
-    /*_markedDateMap.add(
-        DateTime.parse('2019-04-18'),
-        new Event(
-          date: DateTime.parse('2019-04-18'),
-          title: 'Event 5',
-          icon: _eventIcon,
-        ));*/
-
-    //_db.getDatesFor("koriawas@dtu.dk", "Playing football").then((value)=>value.forEach((f)=>print(f)));
-  /*  for (int i = 0; i < 40; i++) {
-      _markedDateMap.add(
-          new DateTime(2019, 4, i),
-          new Event(
-            date: DateTime(2019, 4, i),
-            title: 'Event 5',
-            icon: _eventIcon,
-          ));
-    }*/
-
-    /* List<String> dates =
-         _db.getDatesFor("koriawas@dtu.dk", "Playing football");
-*/
-
-/*
-
-   setState(() {
-     List<String> dates =
-     _db.getDatesFor("koriawas@dtu.dk", "Playing football");
-     for (var u in dates) {
-       print(u);
-     }
-
-     print("inside init "+ dates.toString());
-
-     for (int i = 0; i < dates.length; i++) {
-
-       print(DateTime.parse(dates.removeAt(i).toString()));
-
-       _markedDateMap.add(
-           DateTime.parse(dates.removeAt(i).toString()),
-           new Event(
-             date: DateTime.parse(dates.removeAt(i).toString()),
-             title: 'Event 5',
-             icon: _eventIcon,
-           ));
-     }
-
-
-
-   });
-*/
-
     super.initState();
-
-
-
-
-
-    // _db.getDatesFor("koriawas@dtu.dk", "Playing football").then((value)=>value.forEach((f)=>print(f)));
   }
 
   @override

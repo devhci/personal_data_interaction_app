@@ -7,8 +7,9 @@ class DB {
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
 
- List<String> dates = List<String>();
+  List<String> dates = List<String>();
 
+  List<HashMap<String, String>> list;
 
   Future<dynamic> getDoc() {}
 
@@ -47,55 +48,25 @@ class DB {
         .delete();
   }
 
-  List<HashMap<String, String>> getData(String username)  {
-    List<HashMap<String, String>> list = List();
-    Firestore.instance
+  Future<QuerySnapshot> getData(String username) async {
+    list = List<HashMap<String, String>>();
+
+    return Firestore.instance
         .collection("users")
         .document(username)
         .collection("data")
-        .getDocuments()
-        .then(onValue); //  .then(onValue);
-
-    return list;
+        .getDocuments();
   }
 
-  Future<DocumentSnapshot>getDatesFor(String username, String itemName)  async {
-    List<String> dates = List<String>();
+  Future<DocumentSnapshot> getDatesFor(String username, String itemName) async {
     print("inside DB getDates");
 
-   return  await Firestore.instance
+    return await Firestore.instance
         .collection("users")
         .document(username)
         .collection("data")
-        .document(itemName).get();
-
-  }
-
-  void onValue(QuerySnapshot value) {
-    //value.documents.single.exists;
-
-    for (var u in value.documents) {
-      HashMap<String, String> items = HashMap<String, String>();
-
-      items["name"] = u.documentID;
-
-      int count = 0;
-
-      for (var value in u.data.remove("timestemp")) {
-        //print(value);
-
-        count++;
-      }
-
-      items["count"] = count.toString();
-
-     // list.add(items);
-    }
-
-    /* for (var u in list) {
-      print(u.remove("name"));
-      print(u.remove("count"));
-    }*/
+        .document(itemName)
+        .get();
   }
 
   Future<void> remove(String username, String documentName) {

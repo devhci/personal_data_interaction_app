@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:personal_data_interaction_app/firebase/DB.dart';
+import 'package:personal_data_interaction_app/util/util.dart';
 
 class TestClass extends StatelessWidget {
   HashMap<String, String> itemsWithCount = HashMap<String, String>();
@@ -18,6 +19,8 @@ class TestClass extends StatelessWidget {
   /* List<HashMap<String, String>> list = List();*/
 
   DB _db = DB();
+
+  Util util = Util();
 
   void add() {
     _db.update("koriawas@dtu.dk", "Playing football");
@@ -36,12 +39,11 @@ class TestClass extends StatelessWidget {
   }
 
   void listAllForAMonth() async {
-    List<HashMap<String, String>> list = await _db.getData("koriawas@dtu.dk");
-
-    for (var u in list) {
-      print("Name " + u.remove("name") + " count  " + u.remove("count"));
-      //print(u.remove("count"));
-    }
+    await util.getAllData().then((list) {
+      for (var u in list) {
+        print(u.remove("name") + " count  " + u.remove("count"));
+      }
+    });
   }
 
   void giveListOfDateForCalenderVisualization() async {

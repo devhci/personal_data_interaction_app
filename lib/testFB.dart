@@ -19,7 +19,37 @@ class TestClass extends StatelessWidget {
   DB _db = DB();
 
 
-  void test() {
+  void add()
+  {
+
+
+    _db.update("koriawas@dtu.dk", "Playing football");
+
+
+  }
+
+
+  void remove(){
+
+    _db.remove("koriawas@dtu.dk", "Playing football");
+
+  }
+
+  void create(){
+
+
+    _db.createNewItem("koriawas@dtu.dk", "Playing football");
+
+
+  }
+
+
+  void deleteItem(){
+
+    _db.deleteItem("koriawas@dtu.dk", "Playing football");
+
+  }
+  void listAllForAMonth() {
     Firestore.instance
         .collection('auto-id')
         .snapshots()
@@ -36,7 +66,7 @@ class TestClass extends StatelessWidget {
     print("test clicked");
 
     //_db.createNewItem("koriawas@dtu.dk","criket");
-    _db.update("koriawas@dtu.dk", "criket");
+   // _db.update("koriawas@dtu.dk", "criket");
 
     _db.getData("koriawas@dtu.dk").then(onValue);
 
@@ -92,35 +122,41 @@ class TestClass extends StatelessWidget {
 
         children: <Widget>[
           FloatingActionButton(
-            onPressed: () => test(),
+            onPressed: () => add(),
             child: Icon(
               Icons.add,
             ),
             mini: false,
           ),
           FloatingActionButton(
-            onPressed: () => test(),
+            onPressed: () => remove(),
             child: Icon(
-              Icons.update,
+              Icons.remove,
             ),
 
           ),
 
     FloatingActionButton(
-    onPressed: () => test(),
+    onPressed: () => create(),
     child: Icon(
-    Icons.remove,
+    Icons.create,
     ),
 
     ),
 FloatingActionButton(
-    onPressed: () => test(),
+    onPressed: () => deleteItem(),
     child: Icon(
-    Icons.calendar_today,
+    Icons.delete,
     ),
 
     ),
+          FloatingActionButton(
+            onPressed: () => listAllForAMonth(),
+            child: Icon(
+              Icons.list,
+            ),
 
+          ),
 
         ],
       ),

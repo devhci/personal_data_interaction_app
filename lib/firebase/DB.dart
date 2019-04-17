@@ -12,11 +12,11 @@ class DB {
   Future<void> createNewItem(String username, String itemName) {
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
-    //map["timestemp"]= Timestamp.now() ;
+    map["timestemp"]= Timestamp.now() ;
 
     List dtLst = new List();
 
-    dtLst.add(formatter.format(now));
+    //dtLst.add(Timestamp.now());
 
     map["timestemp"] = dtLst;
 
@@ -100,7 +100,7 @@ class DB {
         if (postSnapshot.data.containsKey("timestemp")) {
           await tx.update(postRef, <String, dynamic>{
             'timestemp': FieldValue.arrayUnion(
-                [formatter.format(now) + 63257.toString()])
+                [formatter.format(now) ])
           });
         }
       });

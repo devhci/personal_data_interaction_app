@@ -7,8 +7,8 @@ class DB {
   var now = new DateTime.now();
   var formatter = new DateFormat('yyyy-MM-dd');
 
-  List<String> dates = List<String>();
-  List<HashMap<String, String>> list = List();
+ List<String> dates = List<String>();
+
 
   Future<dynamic> getDoc() {}
 
@@ -47,7 +47,8 @@ class DB {
         .delete();
   }
 
-  Future<List<HashMap<String, String>>> getData(String username) async {
+  List<HashMap<String, String>> getData(String username)  {
+    List<HashMap<String, String>> list = List();
     Firestore.instance
         .collection("users")
         .document(username)
@@ -58,20 +59,16 @@ class DB {
     return list;
   }
 
-  Future<List<String>> getDatesFor(String username, String itemName) async {
-    Firestore.instance
+  Future<DocumentSnapshot>getDatesFor(String username, String itemName)  async {
+    List<String> dates = List<String>();
+    print("inside DB getDates");
+
+   return  await Firestore.instance
         .collection("users")
         .document(username)
         .collection("data")
-        .document(itemName)
-        .snapshots()
-        .forEach((doc) => {
-              doc.data.remove("timestemp").forEach((v) => {dates.add(v)})
-            });
+        .document(itemName).get();
 
-    return dates;
-
-    //  .then(onValue);
   }
 
   void onValue(QuerySnapshot value) {
@@ -92,7 +89,7 @@ class DB {
 
       items["count"] = count.toString();
 
-      list.add(items);
+     // list.add(items);
     }
 
     /* for (var u in list) {

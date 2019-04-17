@@ -39,17 +39,18 @@ class TestClass extends StatelessWidget {
     List<HashMap<String, String>> list = await _db.getData("koriawas@dtu.dk");
 
     for (var u in list) {
-      print(u.remove("name"));
-      print(u.remove("count"));
+      print("Name " + u.remove("name") + " count  " + u.remove("count"));
+      //print(u.remove("count"));
     }
   }
 
   void giveListOfDateForCalenderVisualization() async {
-    List<String> dates =
+    DocumentSnapshot documentSnapshot =
         await _db.getDatesFor("koriawas@dtu.dk", "Playing football");
-    for (var u in dates) {
-      print(u);
-    }
+
+    var a = documentSnapshot.data.remove("timestemp");
+
+    print(a);
   }
 
   @override

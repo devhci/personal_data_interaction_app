@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'Aspect.dart';
+import 'aspect.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Bloc {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'RoundedButton.dart';
-import 'MyColors.dart';
-import '../Aspect.dart';
+import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
+import 'package:personal_data_interaction_app/aspect.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
 import 'package:personal_data_interaction_app/main_devender.dart';
 
@@ -12,9 +11,14 @@ class Chart extends StatefulWidget {
 
 class _ChartState extends State<Chart> {
   List<Aspect> aspects = [];
+  DateTime date;
+  bool _loading;
 
   void getAllData() async {
     util.getAllData("koriawas@dtu.dk").then((allData) {
+      setState(() {
+        _loading = false;
+      });
       for (var aspect in allData) {
         Aspect a = Aspect(aspect['name'], aspect['listOfDates'], aspect['color']);
         setState(() {
@@ -26,6 +30,7 @@ class _ChartState extends State<Chart> {
 
   @override
   initState() {
+    _loading = true;
     // TODO: download aspects
     getAllData();
 
@@ -114,6 +119,10 @@ class _ChartState extends State<Chart> {
 
   @override
   Widget build(BuildContext context) {
-    return barChart(aspects);
+    return _loading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : barChart(aspects);
   }
 }

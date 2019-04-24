@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'MyColors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
-import '../Aspect.dart';
+import '../aspect.dart';
 import 'package:personal_data_interaction_app/firebase/DB.dart';
 import 'dart:async';
 

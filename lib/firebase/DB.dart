@@ -44,12 +44,13 @@ class DB {
   Future<void> deleteItem(String username, String itemName) {
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
+    map["delete_date"]= formatter.format(now);
+
     Firestore.instance
         .collection('users')
         .document(username)
         .collection('data')
-        .document(itemName)
-        .delete();
+        .document(itemName).updateData(map);
   }
 
   Future<QuerySnapshot> getData(String username) async {

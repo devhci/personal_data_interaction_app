@@ -3,6 +3,7 @@ import 'MyColors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
 import '../Aspect.dart';
+import 'package:personal_data_interaction_app/firebase/DB.dart';
 
 class AspectCell extends StatefulWidget {
   final Aspect aspect;
@@ -34,8 +35,14 @@ class _AspectCellState extends State<AspectCell> {
         decoration: BoxDecoration(
             color: MyColors.lightGrey,
             boxShadow: [
-              BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.2), offset: Offset(2, 4), blurRadius: 10),
-              BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.2), offset: Offset(-1, -1), blurRadius: 5)
+              BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.2),
+                  offset: Offset(2, 4),
+                  blurRadius: 10),
+              BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.2),
+                  offset: Offset(-1, -1),
+                  blurRadius: 5)
             ],
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: FlatButton(
@@ -71,8 +78,11 @@ class _AspectCellState extends State<AspectCell> {
                           size: 32,
                           color: MyColors.darkGrey,
                         ),
-                        onPressed: () => bloc.deleteAspect(widget.aspect),
-                      )
+                        onPressed: () {
+                          //TODO delete
+                          db.deleteItem("koriawas@dtu.dk", widget.aspect.name);
+                          bloc.deleteAspect(widget.aspect);
+                        })
                     : CupertinoSwitch(
                         value: selected,
                         onChanged: (value) {

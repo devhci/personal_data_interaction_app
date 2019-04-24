@@ -4,7 +4,6 @@ import 'dart:async';
 import 'blocs.dart';
 import 'Aspect.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
-import 'dart:collection';
 import 'package:unique_identifier/unique_identifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,6 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+
   Animation<Offset> animatedPosition;
   AnimationController animationController;
 
@@ -40,6 +40,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   initState() {
     getAllData();
+    getDeviceId();
 
     selectedTab = TabElement.Pick;
 
@@ -197,11 +198,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  getDeviceId() async {
-    String deviceId = await UniqueIdentifier.serial;
+  void getDeviceId() async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("deviceId", deviceId);
+
+    if(prefs.get("deviceId")==null) {
+      print("Setting Shared preferences");
+      String deviceId = await UniqueIdentifier.serial;
+      prefs.setString( "deviceId", deviceId );
+    }
 
     print("device Id from Shared pref" + prefs.get("deviceId"));
   }

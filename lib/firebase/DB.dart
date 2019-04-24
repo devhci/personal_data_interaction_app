@@ -93,7 +93,7 @@ class DB {
       });
   }
 
-  Future<void> update(String username, String documentName) {
+  Future<void> update(String username, String documentName, DateTime datetime) {
     final DocumentReference postRef = Firestore.instance
         .collection('users')
         .document(username)
@@ -107,7 +107,7 @@ class DB {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.data.containsKey("timestemp")) {
           await tx.update(postRef, <String, dynamic>{
-            'timestemp': FieldValue.arrayUnion([formatter.format(now)])
+            'timestemp': FieldValue.arrayUnion([formatter.format(datetime)])
           });
         }
       });

@@ -23,7 +23,7 @@ class TestClass extends StatelessWidget {
   Util util = Util();
 
   void add() {
-    _db.update("koriawas@dtu.dk", "thisiswhatwecreated");
+   // _db.update("koriawas@dtu.dk", "thisiswhatwecreated");
   }
 
   void remove() {

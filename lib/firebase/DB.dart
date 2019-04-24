@@ -31,14 +31,13 @@ class DB {
     // Firestore.instance.collection('users').document(username).collection('data').document(itemName).setData(map);
     //Firestore.instance.collection('testusers').document(itemName).setData(map);
 
-    print("Inside create");
-
     Firestore.instance
         .collection('users')
         .document(username)
         .collection('data')
         .document(itemName)
         .setData(map);
+
   }
 
   Future<void> deleteItem(String username, String itemName) {

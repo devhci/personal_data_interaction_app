@@ -3,6 +3,7 @@ import 'UI Elements/ui_elements.dart';
 import 'dart:async';
 import 'blocs.dart';
 import 'Aspect.dart';
+import 'package:personal_data_interaction_app/util/util.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -178,6 +179,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: setAppBar(),
       body: setBodyView(),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+
+
+        util.getAllData("koriawas@dtu.dk");
+
+      }),
       bottomNavigationBar: SlideTransition(
         child: setBottomBar(),
         position: animatedPosition,

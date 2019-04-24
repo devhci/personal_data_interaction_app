@@ -24,29 +24,38 @@ class Util {
     return list;
   }
 
-  Future<List<HashMap<String, String>>> getAllData() async {
-    List<HashMap<String, String>> list = List<HashMap<String, String>>();
+  Future<List<HashMap<String, dynamic>>> getAllData(String userName) async {
+    List<HashMap<String, dynamic>> list = List<HashMap<String, dynamic>>();
 
-    QuerySnapshot querySnapshot = await _db.getData("koriawas@dtu.dk");
+    QuerySnapshot querySnapshot = await _db.getData(userName);
 
     for (var u in querySnapshot.documents) {
-      HashMap<String, String> items = HashMap<String, String>();
+      HashMap<String, dynamic> items = HashMap<String, dynamic>();
 
       items["name"] = u.documentID;
+      items["color"]=u.data.remove("color");
+      items["delete_date"]=u.data.remove("delete_date");
 
-      int count = 0;
 
-      for (var value in u.data.remove("timestemp")) {
+      //int count = 0;
+
+      items["listOfDates"]=u.data.remove("timestemp");
+
+     /* for (var value in u.data.remove("timestemp")) {
         //print(value);
 
         count++;
-      }
+      }*/
 
-      items["count"] = count.toString();
+     // items["count"] = count.toString();
 
       list.add(items);
     }
 
+    print(list.toString());
+
     return list;
   }
 }
+
+Util util =Util();

@@ -39,7 +39,7 @@ class TestClass extends StatelessWidget {
   }
 
   void listAllForAMonth() async {
-    await util.getAllData().then((list) {
+    await util.getAllData("").then((list) {
       for (var u in list) {
         print(u.remove("name") + " count  " + u.remove("count"));
       }

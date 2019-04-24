@@ -14,25 +14,20 @@ import 'package:personal_data_interaction_app/firebase/DB.dart';
 
 import 'package:personal_data_interaction_app/main.dart';
 
-void main() {
+
+import 'package:personal_data_interaction_app/util/util.dart';
+void main() async {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
+  Util util= Util();
 
-    List dtLst = new List();
+    List<HashMap<String, dynamic>> list = await util.getAllData("koriawas@dtu.dk");
 
-    dtLst.add(Timestamp.now());
-
-    map["timestemp"] = dtLst;
-
-    HashMap<String, dynamic> update = HashMap<String, dynamic>();
-    update["timestemp"] = dtLst;
-
-    DB _db= DB();
-
+    print(list.toString());
 
 
 

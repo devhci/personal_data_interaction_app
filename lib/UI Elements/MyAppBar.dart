@@ -150,7 +150,7 @@ class _MyAppBarState extends State<MyAppBar> {
 
   Widget nextButton() {
     return Opacity(
-      opacity: widget.tabElement == TabElement.AddDelete ? 0 : 1,
+      opacity: (widget.tabElement == TabElement.AddDelete || date.difference(DateTime.now()).inDays == 0) ? 0 : 1,
       child: Container(
         child: FlatButton(
           child: Row(
@@ -168,7 +168,7 @@ class _MyAppBarState extends State<MyAppBar> {
               ),
             ],
           ),
-          onPressed: date.difference(DateTime.now()).inDays == 0 ? () => onRightButtonPressed() : null,
+          onPressed: date.difference(DateTime.now()).inDays == 0 ? null : () => onRightButtonPressed(),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'RoundedButton.dart';
 import 'MyColors.dart';
 import '../Aspect.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
+import 'package:personal_data_interaction_app/main_devender.dart';
 
 class Chart extends StatefulWidget {
   @override
@@ -70,29 +71,38 @@ class _ChartState extends State<Chart> {
   }
 
   Widget barCell(BuildContext context, int index) {
-    return Container(
-        height: 80,
-        child: Column(
-          children: <Widget>[
-            Align(
-              alignment: Alignment(-1, 0),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  aspects[index].name,
-                  style: TextStyle(fontSize: 18),
+    return FlatButton(
+      onPressed: () {
+        // TODO: navigate to calendar view with this "aspects[index].name"
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MyHomePage(
+                  title: aspects[index].name,
+                )));
+      },
+      child: Container(
+          height: 80,
+          child: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment(-1, 0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    aspects[index].name,
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
-            ),
-            bar(aspects[index]),
-            Padding(
-              padding: const EdgeInsets.only(top: 12.0),
-              child: Divider(
-                height: 1,
-              ),
-            )
-          ],
-        ));
+              bar(aspects[index]),
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Divider(
+                  height: 1,
+                ),
+              )
+            ],
+          )),
+    );
   }
 
   Widget barChart(List<Aspect> aspects) {

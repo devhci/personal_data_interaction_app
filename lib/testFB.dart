@@ -27,7 +27,7 @@ class TestClass extends StatelessWidget {
   }
 
   void remove() {
-    _db.remove("koriawas@dtu.dk", "thisiswhatwecreated");
+    _db.remove("koriawas@dtu.dk", "thisiswhatwecreated", DateTime.now());
   }
 
   void createNewItem() {

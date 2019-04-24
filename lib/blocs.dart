@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'Aspect.dart';
+import 'package:rxdart/rxdart.dart';
 
 class Bloc {
   final _selectedTabController = StreamController<TabElement>.broadcast();
   final _addAspectController = StreamController<Aspect>.broadcast();
   final _deleteAspectController = StreamController<Aspect>.broadcast();
-  final _dateController = StreamController<DateTime>.broadcast();
+  final _dateController = BehaviorSubject<DateTime>();
 
   // Add data to stream
   Function(TabElement) get changeSelectedTabElement => _selectedTabController.sink.add;

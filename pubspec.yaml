@@ -27,8 +27,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   charts_flutter: ^0.6.0
   path_provider: ^0.5.0+1
-  dependencies:
   cloud_firestore: ^0.9.13+1
+  rxdart: ^0.21.0
 
 
 dev_dependencies:

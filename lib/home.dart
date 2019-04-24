@@ -4,6 +4,7 @@ import 'dart:async';
 import 'blocs.dart';
 import 'Aspect.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
+import 'dart:collection';
 
 class Home extends StatefulWidget {
   @override
@@ -17,18 +18,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   StreamSubscription<TabElement> selectedTabSubscription;
   StreamSubscription<Aspect> deleteAspectSubscription;
   StreamSubscription<Aspect> addAspectSubscription;
+  StreamSubscription<DateTime> dateSubscription;
   TabElement selectedTab;
 
-  List<Aspect> aspects;
+  List<Aspect> aspects = [];
+
+  void getAllData() async {
+    util.getAllData("koriawas@dtu.dk").then((allData) {
+      for (var aspect in allData) {
+        Aspect a = Aspect(aspect['name'], aspect['listOfDates'], aspect['color']);
+        setState(() {
+          aspects.add(a);
+        });
+      }
+    });
+  }
 
   @override
   initState() {
-    // TODO: download the required set of aspects
-    aspects = [
-      Aspect("Did I go climbing?", 10, Colors.redAccent),
-      Aspect("I didn't use my phone before going to bed", 10, Colors.deepPurpleAccent),
-      Aspect("Did I have a good meal today?", 10, Colors.greenAccent),
-    ];
+    getAllData();
 
     selectedTab = TabElement.Pick;
 
@@ -129,25 +137,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: MyAppBar(tabElement: this.selectedTab),
       preferredSize: Size.fromHeight(80),
     );
-
-//    switch (selectedTab) {
-//      case TabElement.AddDelete:
-//        return PreferredSize(
-//          child: MyAppBar(mode: AppBarMode.Blank),
-//          preferredSize: Size.fromHeight(80),
-//        );
-//      case TabElement.Pick:
-//        return PreferredSize(
-//          child: MyAppBar(mode: AppBarMode.Date),
-//          preferredSize: Size.fromHeight(80),
-//        );
-//      case TabElement.Track:
-//        return PreferredSize(
-//          child: MyAppBar(mode: AppBarMode.Month),
-//          preferredSize: Size.fromHeight(80),
-//        );
-
-//    }
   }
 
   Widget setBodyView() {
@@ -159,7 +148,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       case TabElement.Track:
         return trackView();
     }
-    return Container();
   }
 
   Widget trackView() {
@@ -176,18 +164,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: setAppBar(),
-      body: setBodyView(),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-
-
-        util.getAllData("koriawas@dtu.dk");
-
-      }),
-      bottomNavigationBar: SlideTransition(
-        child: setBottomBar(),
-        position: animatedPosition,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: setAppBar(),
+        body: setBodyView(),
+        bottomNavigationBar: SlideTransition(
+          child: setBottomBar(),
+          position: animatedPosition,
+        ),
       ),
     );
   }
@@ -197,6 +182,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     selectedTabSubscription.cancel();
     addAspectSubscription.cancel();
     deleteAspectSubscription.cancel();
+    dateSubscription.cancel();
     super.dispose();
   }
 }

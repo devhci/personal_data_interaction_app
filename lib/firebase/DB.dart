@@ -114,5 +114,4 @@ class DB {
   }
 }
 
-
-DB db= DB();
+final DB db= DB();

@@ -12,7 +12,7 @@ class _EditModeBottomBarState extends State<EditModeBottomBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 80,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'RoundedButton.dart';
 import 'MyColors.dart';
 import '../Aspect.dart';
+import 'package:personal_data_interaction_app/util/util.dart';
 
 class Chart extends StatefulWidget {
   @override
@@ -9,16 +10,24 @@ class Chart extends StatefulWidget {
 }
 
 class _ChartState extends State<Chart> {
-  List<Aspect> aspects;
+  List<Aspect> aspects = [];
+
+  void getAllData() async {
+    util.getAllData("koriawas@dtu.dk").then((allData) {
+      for (var aspect in allData) {
+        Aspect a = Aspect(aspect['name'], aspect['listOfDates'], aspect['color']);
+        setState(() {
+          aspects.add(a);
+        });
+      }
+    });
+  }
 
   @override
   initState() {
     // TODO: download aspects
-    aspects = [
-      Aspect("Did I go climbing?", 10, Colors.redAccent),
-      Aspect("I didn't use my phone before going to bed", 8, Colors.deepPurpleAccent),
-      Aspect("Did I have a good meal today?", 27, Colors.greenAccent),
-    ];
+    getAllData();
+
     super.initState();
   }
 
@@ -27,9 +36,9 @@ class _ChartState extends State<Chart> {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: aspect.count,
+        itemCount: aspect.dateTimeDates.length,
         itemBuilder: (BuildContext context, int index) {
-          if (index == aspect.count - 1) {
+          if (index == aspect.dateTimeDates.length - 1) {
             return Padding(
               padding: const EdgeInsets.all(1.0),
               child: Row(
@@ -41,7 +50,7 @@ class _ChartState extends State<Chart> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
-                    child: Text(aspect.count.toString()),
+                    child: Text(aspect.dateTimeDates.length.toString()),
                   ),
                 ],
               ),

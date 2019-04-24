@@ -73,7 +73,7 @@ class _AddNewAspectCellState extends State<AddNewAspectCell> {
                         print("with this title: ${textEditingController.value.text}");
                         print("and this color: $color");
                         bloc.addAspect(
-                          Aspect(textEditingController.value.text, 1, color),
+                          Aspect(textEditingController.value.text, [], color.value.toRadixString(16)),
                         );
                         FocusScope.of(context).requestFocus(FocusNode());
                       }

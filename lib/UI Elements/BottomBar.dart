@@ -12,7 +12,7 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.transparent,
-      height: 100,
+      height: 80,
       child: Row(
         children: <Widget>[
           Expanded(

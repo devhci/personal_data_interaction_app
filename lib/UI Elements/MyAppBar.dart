@@ -168,7 +168,7 @@ class _MyAppBarState extends State<MyAppBar> {
               ),
             ],
           ),
-          onPressed: date.difference(DateTime.now()) < Duration(days: 1) ? () => onRightButtonPressed() : null,
+          onPressed: date.difference(DateTime.now()).inDays == 0 ? () => onRightButtonPressed() : null,
         ),
       ),
     );

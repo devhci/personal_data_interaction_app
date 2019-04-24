@@ -23,19 +23,19 @@ class TestClass extends StatelessWidget {
   Util util = Util();
 
   void add() {
-    _db.update("koriawas@dtu.dk", "Playing football");
+    _db.update("koriawas@dtu.dk", "thisiswhatwecreated");
   }
 
   void remove() {
-    _db.remove("koriawas@dtu.dk", "Playing football");
+    _db.remove("koriawas@dtu.dk", "thisiswhatwecreated");
   }
 
-  void create() {
-    _db.createNewItem("koriawas@dtu.dk", "Playing football");
+  void createNewItem() {
+    _db.createNewItem("koriawas@dtu.dk", "thisiswhatwecreated");
   }
 
   void deleteItem() {
-    _db.deleteItem("koriawas@dtu.dk", "Playing football");
+    _db.deleteItem("koriawas@dtu.dk", "thisiswhatwecreated");
   }
 
   void listAllForAMonth() async {
@@ -84,7 +84,7 @@ class TestClass extends StatelessWidget {
             ),
           ),
           FloatingActionButton(
-            onPressed: () => create(),
+            onPressed: () => createNewItem(),
             child: Icon(
               Icons.create,
             ),

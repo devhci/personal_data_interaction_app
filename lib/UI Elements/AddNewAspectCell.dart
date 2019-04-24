@@ -64,9 +64,11 @@ class _AddNewAspectCellState extends State<AddNewAspectCell> {
                 color: MyColors.darkBlue,
                 onPressed: validate
                     ? () {
-                        // TODO: upload new aspect
-
-                        db.createNewItem("koriawas@dtu.dk", textEditingController.value.text, "#hgdhsgf");
+                        db.createNewItem(
+                          "koriawas@dtu.dk",
+                          textEditingController.value.text,
+                          color.value.toRadixString(16),
+                        );
                         print("this is the place where I should create the new aspect");
                         print("with this title: ${textEditingController.value.text}");
                         print("and this color: $color");

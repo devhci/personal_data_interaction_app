@@ -6,6 +6,8 @@ import 'RoundedButton.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
 import '../Aspect.dart';
 
+import 'package:personal_data_interaction_app/firebase/DB.dart';
+
 class AddNewAspectCell extends StatefulWidget {
   @override
   _AddNewAspectCellState createState() => _AddNewAspectCellState();
@@ -63,6 +65,8 @@ class _AddNewAspectCellState extends State<AddNewAspectCell> {
                 onPressed: validate
                     ? () {
                         // TODO: upload new aspect
+
+                        db.createNewItem("koriawas@dtu.dk", textEditingController.value.text, "#hgdhsgf");
                         print("this is the place where I should create the new aspect");
                         print("with this title: ${textEditingController.value.text}");
                         print("and this color: $color");

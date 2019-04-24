@@ -31,7 +31,7 @@ class TestClass extends StatelessWidget {
   }
 
   void createNewItem() {
-    _db.createNewItem("koriawas@dtu.dk", "thisiswhatwecreated");
+    _db.createNewItem("koriawas@dtu.dk", "thisiswhatwecreated","#4767536");
   }
 
   void deleteItem() {

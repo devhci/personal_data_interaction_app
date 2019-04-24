@@ -13,10 +13,14 @@ class DB {
 
   Future<dynamic> getDoc() {}
 
-  Future<void> createNewItem(String username, String itemName) {
+  Future<void> createNewItem(String username, String itemName,String color) {
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
+
+
     map["timestemp"] = Timestamp.now();
+    map["color"]=color;
+    map["delete_date"]="";
 
     List dtLst = new List();
 
@@ -109,3 +113,6 @@ class DB {
       });
   }
 }
+
+
+DB db= DB();

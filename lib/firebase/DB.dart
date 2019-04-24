@@ -73,7 +73,7 @@ class DB {
         .get();
   }
 
-  Future<void> remove(String username, String documentName) {
+  Future<void> remove(String username, String documentName,DateTime datetime) {
     final DocumentReference postRef = Firestore.instance
         .collection('users')
         .document(username)
@@ -87,7 +87,7 @@ class DB {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.data.containsKey("timestemp")) {
           await tx.update(postRef, <String, dynamic>{
-            'timestemp': FieldValue.arrayRemove([formatter.format(now)])
+            'timestemp': FieldValue.arrayRemove([formatter.format(datetime)])
           });
         }
       });

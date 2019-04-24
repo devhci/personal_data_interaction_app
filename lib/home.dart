@@ -5,6 +5,8 @@ import 'blocs.dart';
 import 'Aspect.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
 import 'dart:collection';
+import 'package:unique_identifier/unique_identifier.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -26,7 +28,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void getAllData() async {
     util.getAllData("koriawas@dtu.dk").then((allData) {
       for (var aspect in allData) {
-        Aspect a = Aspect(aspect['name'], aspect['listOfDates'], aspect['color']);
+        Aspect a =
+            Aspect(aspect['name'], aspect['listOfDates'], aspect['color']);
         setState(() {
           aspects.add(a);
         });
@@ -40,8 +43,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     selectedTab = TabElement.Pick;
 
-    animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 150));
-    animatedPosition = Tween(begin: Offset(0, 0), end: Offset(0, 1)).animate(animationController);
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
+    animatedPosition = Tween(begin: Offset(0, 0), end: Offset(0, 1))
+        .animate(animationController);
 
     selectedTabSubscription = bloc.tabElement.listen((tabElement) {
       switch (tabElement) {
@@ -158,7 +163,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return ListView.builder(
       itemBuilder: aspectCellBuilder,
       // Add one more for the "add cell"
-      itemCount: selectedTab == TabElement.AddDelete ? aspects.length + 1 : aspects.length,
+      itemCount: selectedTab == TabElement.AddDelete
+          ? aspects.length + 1
+          : aspects.length,
     );
   }
 
@@ -173,6 +180,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           child: setBottomBar(),
           position: animatedPosition,
         ),
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          getDeviceId();
+          util.getAllData("koriawas@dtu.dk");
+        }),
       ),
     );
   }
@@ -184,5 +195,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     deleteAspectSubscription.cancel();
     dateSubscription.cancel();
     super.dispose();
+  }
+
+  getDeviceId() async {
+    String deviceId = await UniqueIdentifier.serial;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("deviceId", deviceId);
+
+    print("device Id from Shared pref" + prefs.get("deviceId"));
   }
 }

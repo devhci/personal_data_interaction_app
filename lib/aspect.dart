@@ -6,19 +6,26 @@ class Aspect {
   Color color;
   List<DateTime> dates = [];
   DateTime deleteDate;
+  DateTime createDate;
 
-  Aspect(
-      {@required String name,
-      @required List<dynamic> stringDates,
-      @required String stringColor,
-      @required String stringDeleteDate}) {
+  Aspect({
+    @required String name,
+    @required List<dynamic> stringDates,
+    @required String stringColor,
+    @required String stringDeleteDate,
+    @required String stringCreateDate,
+  }) {
     this.name = name;
+
     this.color = Color(int.parse(stringColor, radix: 16));
+
     if (stringDeleteDate == "") {
       deleteDate = null;
     } else {
       this.deleteDate = util.formatter.parse(stringDeleteDate);
     }
+
+    this.createDate = util.formatter.parse(stringCreateDate);
 
     for (dynamic date in stringDates) {
       date = date.toString();

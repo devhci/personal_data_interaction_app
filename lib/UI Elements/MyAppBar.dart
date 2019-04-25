@@ -20,13 +20,15 @@ class _MyAppBarState extends State<MyAppBar> {
   String middleText;
   Function onLeftButtonPressed;
   Function onRightButtonPressed;
+//  Duration durationForVisibility;
+//  bool shouldNextButtonBeVisible;
 
-  StreamSubscription<DateTime> dateSubscripton;
+  StreamSubscription<DateTime> dateSubscription;
 
   @override
   void initState() {
     date = DateTime.now();
-    dateSubscripton = bloc.date.listen((newDate) {
+    dateSubscription = bloc.date.listen((newDate) {
       setState(() {
         date = newDate;
       });
@@ -35,10 +37,9 @@ class _MyAppBarState extends State<MyAppBar> {
     super.initState();
   }
 
-
   @override
   void dispose() {
-    dateSubscripton.cancel();
+    dateSubscription.cancel();
     super.dispose();
   }
 

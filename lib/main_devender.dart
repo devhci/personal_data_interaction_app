@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
-    show CalendarCarousel;
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import 'package:personal_data_interaction_app/firebase/DB.dart';
-import 'package:personal_data_interaction_app/testFB.dart';
 
 import 'package:personal_data_interaction_app/util/util.dart';
 
@@ -21,8 +19,8 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-       //home: new MyHomePage(title: 'Flutter Calendar Carousel Example'),
-      home: new TestClass(),
+      //home: new MyHomePage(title: 'Flutter Calendar Carousel Example'),
+      //home: new TestClass(),
     );
   }
 }
@@ -82,11 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
         setState(() {
           _markedDateMap.add(
-              new DateTime(
-                  int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
+              new DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
               new Event(
-                date: new DateTime(
-                    int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
+                date: new DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
                 title: 'Event 5',
                 icon: _eventIcon,
               ));

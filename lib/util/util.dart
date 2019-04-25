@@ -30,23 +30,24 @@ class Util {
       HashMap<String, dynamic> items = HashMap<String, dynamic>();
 
       items["name"] = u.documentID;
-      items["color"] = u.data.remove("color");
-      items["delete_date"] = u.data.remove("delete_date");
+    items["color"] = u.data.remove("color");
+    items["delete_date"] = u.data.remove("delete_date");
+    items["create_date"]=u.data.remove("create_date");
 
-      //int count = 0;
+    //int count = 0;
 
-      items["listOfDates"] = u.data.remove("timestemp");
+    items["listOfDates"] = u.data.remove("timestemp");
 
-      /* for (var value in u.data.remove("timestemp")) {
-        //print(value);
+    /* for (var value in u.data.remove(“timestemp”)) {
+       //print(value);
 
-        count++;
-      }*/
+       count++;
+     }*/
 
-      // items["count"] = count.toString();
+    // items[“count”] = count.toString();
 
-      list.add(items);
-    }
+    list.add(items);
+  }
 
 //    print(list.toString());
 

@@ -3,7 +3,7 @@ import 'MyColors.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
 
 class BottomBar extends StatefulWidget {
-  TabElement tabElement;
+  final TabElement tabElement;
 
   BottomBar({this.tabElement});
 

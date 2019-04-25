@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'RoundedButton.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
 import '../aspect.dart';
-
 import 'package:personal_data_interaction_app/firebase/DB.dart';
+import 'package:personal_data_interaction_app/util/util.dart';
 
 class AddNewAspectCell extends StatefulWidget {
   @override
@@ -68,16 +68,15 @@ class _AddNewAspectCellState extends State<AddNewAspectCell> {
                           "koriawas@dtu.dk",
                           textEditingController.value.text,
                           color.value.toRadixString(16),
+                          util.formatter.format(DateTime.now()),
                         );
-                        print("this is the place where I should create the new aspect");
-                        print("with this title: ${textEditingController.value.text}");
-                        print("and this color: $color");
                         bloc.addAspect(
                           Aspect(
                               name: textEditingController.value.text,
                               stringDates: [],
                               stringColor: color.value.toRadixString(16),
-                              stringDeleteDate: ""),
+                              stringDeleteDate: "",
+                              stringCreateDate: "2017-04-01"),
                         );
                         FocusScope.of(context).requestFocus(FocusNode());
                       }

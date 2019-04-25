@@ -9,7 +9,8 @@ import 'dart:async';
 class AspectCell extends StatefulWidget {
   final Aspect aspect;
   final bool isEditMode;
-  AspectCell({this.aspect, this.isEditMode});
+  final DateTime date;
+  AspectCell({this.aspect, this.isEditMode, this.date});
 
   @override
   _AspectCellState createState() => _AspectCellState();
@@ -17,22 +18,27 @@ class AspectCell extends StatefulWidget {
 
 class _AspectCellState extends State<AspectCell> {
   bool selected;
-//  Color color;
+//  StreamSubscription<DateTime> dateSubscription;
 
   @override
   void initState() {
-//    int rnd = Random().nextInt(Colors.accents.length);
-//    color = Colors.accents[rnd];
-
-    StreamSubscription<DateTime> dateSubscription;
     selected = false;
+    for (DateTime dateOfAspect in widget.aspect.dates) {
+      if (dateOfAspect.difference(widget.date).inDays == 0) {
+        selected = true;
+      }
+    }
+
+//    dateSubscription = bloc.date.listen((newDate) {
+//      selected = false;
+//      for (DateTime dateOfAspect in widget.aspect.dates) {
+//        if (dateOfAspect.difference(newDate).inDays == 0) {
+//          selected = true;
+//        }
+//      }
+//    });
+//    print("initState was called: $selected");
     super.initState();
-  }
-
-  @override
-  void dispose() {
-
-    super.dispose();
   }
 
   @override
@@ -54,9 +60,9 @@ class _AspectCellState extends State<AspectCell> {
               ? null
               : () {
                   if (!selected) {
-                    db.update("koriawas@dtu.dk", widget.aspect.name, DateTime.now());
+                    db.update("koriawas@dtu.dk", widget.aspect.name, widget.date);
                   } else {
-                    db.remove("koriawas@dtu.dk", widget.aspect.name, DateTime.now());
+                    db.remove("koriawas@dtu.dk", widget.aspect.name, widget.date);
                   }
                   setState(() {
                     selected = !selected;
@@ -90,12 +96,12 @@ class _AspectCellState extends State<AspectCell> {
                           bloc.deleteAspect(widget.aspect);
                         })
                     : CupertinoSwitch(
-                        value: selected,
+                        value: selected, //widget.isSelectedByDefault,
                         onChanged: (value) {
                           if (!selected) {
-                            db.update("koriawas@dtu.dk", widget.aspect.name, DateTime.now());
+                            db.update("koriawas@dtu.dk", widget.aspect.name, widget.date);
                           } else {
-                            db.remove("koriawas@dtu.dk", widget.aspect.name, DateTime.now());
+                            db.remove("koriawas@dtu.dk", widget.aspect.name, widget.date);
                           }
                           print("switcher new value is: $value");
                           setState(() {
@@ -110,5 +116,11 @@ class _AspectCellState extends State<AspectCell> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+//    dateSubscription.cancel();
+    super.dispose();
   }
 }

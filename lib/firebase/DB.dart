@@ -13,14 +13,13 @@ class DB {
 
   Future<dynamic> getDoc() {}
 
-  Future<void> createNewItem(String username, String itemName,String color) {
+  Future<void> createNewItem(String username, String itemName, String color, String create_date) {
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
-
-
     map["timestemp"] = Timestamp.now();
-    map["color"]=color;
-    map["delete_date"]="";
+    map["color"] = color;
+    map["delete_date"] = "";
+    map["create_date"] = create_date;
 
     List dtLst = new List();
 
@@ -28,57 +27,35 @@ class DB {
 
     map["timestemp"] = dtLst;
 
-    // Firestore.instance.collection('users').document(username).collection('data').document(itemName).setData(map);
-    //Firestore.instance.collection('testusers').document(itemName).setData(map);
+    // Firestore.instance.collection(‘users’).document(username).collection(‘data’).document(itemName).setData(map);
+    //Firestore.instance.collection(‘testusers’).document(itemName).setData(map);
 
-    Firestore.instance
-        .collection('users')
-        .document(username)
-        .collection('data')
-        .document(itemName)
-        .setData(map);
-
+    Firestore.instance.collection('users').document(username).collection('data').document(itemName).setData(map);
   }
 
   Future<void> deleteItem(String username, String itemName) {
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
-    map["delete_date"]= formatter.format(now);
+    map["delete_date"] = formatter.format(now);
 
-    Firestore.instance
-        .collection('users')
-        .document(username)
-        .collection('data')
-        .document(itemName).updateData(map);
+    Firestore.instance.collection('users').document(username).collection('data').document(itemName).updateData(map);
   }
 
   Future<QuerySnapshot> getData(String username) async {
     list = List<HashMap<String, String>>();
 
-    return Firestore.instance
-        .collection("users")
-        .document(username)
-        .collection("data")
-        .getDocuments();
+    return Firestore.instance.collection("users").document(username).collection("data").getDocuments();
   }
 
   Future<DocumentSnapshot> getDatesFor(String username, String itemName) async {
     print("inside DB getDates");
 
-    return await Firestore.instance
-        .collection("users")
-        .document(username)
-        .collection("data")
-        .document(itemName)
-        .get();
+    return await Firestore.instance.collection("users").document(username).collection("data").document(itemName).get();
   }
 
-  Future<void> remove(String username, String documentName,DateTime datetime) {
-    final DocumentReference postRef = Firestore.instance
-        .collection('users')
-        .document(username)
-        .collection('data')
-        .document(documentName);
+  Future<void> remove(String username, String documentName, DateTime datetime) {
+    final DocumentReference postRef =
+        Firestore.instance.collection('users').document(username).collection('data').document(documentName);
 
     //final DocumentReference postRef = Firestore.instance.collection('auto-id').document(documentName);
 
@@ -94,11 +71,8 @@ class DB {
   }
 
   Future<void> update(String username, String documentName, DateTime datetime) {
-    final DocumentReference postRef = Firestore.instance
-        .collection('users')
-        .document(username)
-        .collection('data')
-        .document(documentName);
+    final DocumentReference postRef =
+        Firestore.instance.collection('users').document(username).collection('data').document(documentName);
 
     //final DocumentReference postRef = Firestore.instance.collection('auto-id').document(documentName);
 
@@ -114,4 +88,4 @@ class DB {
   }
 }
 
-final DB db= DB();
+final DB db = DB();

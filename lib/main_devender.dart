@@ -28,26 +28,30 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, this.dateTime}) : super(key: key);
+
 
   final String title;
 
+  DateTime dateTime;
+
   @override
-  _MyHomePageState createState() => new _MyHomePageState(title);
+  _MyHomePageState createState() => new _MyHomePageState(title,dateTime);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   String itemName;
+  DateTime dateTime;
 
   DateTime firstDate, lastDate;
 
   List<DateTime> listDates = List<DateTime>();
 
-  _MyHomePageState(this.itemName);
+  _MyHomePageState(this.itemName,this._currentDate2);
   Util util = Util();
   DB _db = DB();
-  DateTime _currentDate = new DateTime.now();
-  DateTime _currentDate2 = new DateTime.now();
+ // DateTime _currentDate = dateTime;
+  DateTime _currentDate2;
   String _currentMonth = '';
 
   static Widget _eventIcon = new Container(
@@ -183,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
         this.setState(() => _currentDate2 = date);
         events.forEach((event) => print(event.title));
       },
-      weekendTextStyle: TextStyle(color: Colors.white, fontSize: 3),
+      weekendTextStyle: TextStyle(color: Colors.black, fontSize: 15),
       thisMonthDayBorderColor: Colors.grey,
       weekFormat: false,
       markedDatesMap: _markedDateMap,

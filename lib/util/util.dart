@@ -6,10 +6,9 @@ import 'package:intl/intl.dart';
 class Util {
   DB _db = DB();
 
-  Future<List<String>> giveListOfDateForCalenderVisualization() async {
+  Future<List<String>> giveListOfDateForCalenderVisualization(String username, String itemName) async {
     List<String> dates = List<String>();
-    DocumentSnapshot documentSnapshot = await _db.getDatesFor("koriawas@dtu.dk", "Playing football");
-
+    DocumentSnapshot documentSnapshot = await _db.getDatesFor(username,itemName);
     var a = documentSnapshot.data.remove("timestemp");
 
     print(a);

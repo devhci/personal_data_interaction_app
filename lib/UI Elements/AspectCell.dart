@@ -18,7 +18,6 @@ class AspectCell extends StatefulWidget {
 
 class _AspectCellState extends State<AspectCell> {
   bool selected;
-//  StreamSubscription<DateTime> dateSubscription;
 
   @override
   void initState() {
@@ -28,16 +27,6 @@ class _AspectCellState extends State<AspectCell> {
         selected = true;
       }
     }
-
-//    dateSubscription = bloc.date.listen((newDate) {
-//      selected = false;
-//      for (DateTime dateOfAspect in widget.aspect.dates) {
-//        if (dateOfAspect.difference(newDate).inDays == 0) {
-//          selected = true;
-//        }
-//      }
-//    });
-//    print("initState was called: $selected");
     super.initState();
   }
 
@@ -96,7 +85,7 @@ class _AspectCellState extends State<AspectCell> {
                           bloc.deleteAspect(widget.aspect);
                         })
                     : CupertinoSwitch(
-                        value: selected, //widget.isSelectedByDefault,
+                        value: selected,
                         onChanged: (value) {
                           if (!selected) {
                             db.update("koriawas@dtu.dk", widget.aspect.name, widget.date);
@@ -116,11 +105,5 @@ class _AspectCellState extends State<AspectCell> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-//    dateSubscription.cancel();
-    super.dispose();
   }
 }

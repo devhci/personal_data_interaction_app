@@ -114,10 +114,14 @@ class _ChartState extends State<Chart> {
     return GestureDetector(
       onTap: () {
         // TODO: navigate to calendar view with this "aspects[index].name"
-        Navigator.of(context).push(MaterialPageRoute(
+        Navigator.of(context).push(
+          MaterialPageRoute(
             builder: (context) => MyHomePage(
                   title: aspects[index].name,
-                )));
+                  dateTime: date,
+                ),
+          ),
+        );
       },
       child: Container(
           height: 80,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
-    show CalendarCarousel;
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -11,32 +10,14 @@ import 'package:personal_data_interaction_app/firebase/DB.dart';
 
 import 'package:personal_data_interaction_app/util/util.dart';
 
-void main() => runApp(new MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'dooboolab flutter calendar',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      //home: new MyHomePage(title: 'Flutter Calendar Carousel Example'),
-      // home: new TestClass(),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title, this.dateTime}) : super(key: key);
 
-
   final String title;
-
-  DateTime dateTime;
+  final DateTime dateTime;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState(title,dateTime);
+  _MyHomePageState createState() => new _MyHomePageState(title, dateTime);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -47,10 +28,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<DateTime> listDates = List<DateTime>();
 
-  _MyHomePageState(this.itemName,this._currentDate2);
+  _MyHomePageState(this.itemName, this._currentDate2);
   Util util = Util();
   DB _db = DB();
- // DateTime _currentDate = dateTime;
+  // DateTime _currentDate = dateTime;
   DateTime _currentDate2;
   String _currentMonth = '';
 
@@ -79,10 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    util
-        .giveListOfDateForCalenderVisualization(
-            "koriawas@dtu.dk", this.itemName)
-        .then((list) {
+    util.giveListOfDateForCalenderVisualization("koriawas@dtu.dk", this.itemName).then((list) {
       print("inside listDate" + list.toString());
 
       for (var v in list) {
@@ -94,21 +72,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
         print(date[0] + " " + date[1] + " " + date[2]);
 
-
-
         setState(() {
           _markedDateMap.add(
-              new DateTime(
-                  int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
+              new DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
               new Event(
-                date: new DateTime(
-                    int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
+                date: new DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
                 title: 'Event 5',
                 icon: _eventIcon,
               ));
 
-          listDates.add(new DateTime(
-              int.parse(date[0]), int.parse(date[1]), int.parse(date[2])));
+          listDates.add(new DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])));
         });
       }
       listDates.sort();
@@ -213,83 +186,80 @@ class _MyHomePageState extends State<MyHomePage> {
       selectedDayTextStyle: TextStyle(
         color: Colors.black,
       ),
-     // minSelectedDate: _currentDate,
-     // maxSelectedDate: _currentDate.add(Duration(days: 60)),
+      // minSelectedDate: _currentDate,
+      // maxSelectedDate: _currentDate.add(Duration(days: 60)),
       onCalendarChanged: (DateTime date) {
         this.setState(() => _currentMonth = DateFormat.yMMM().format(date));
       },
     );
 
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text(widget.title),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(
-                  top: 30.0,
-                  bottom: 16.0,
-                  left: 16.0,
-                  right: 16.0,
-                ),
-                child: new Row(
-                  children: <Widget>[
-                    FlatButton(
-                      child: Text('PREV'),
-                      onPressed: () {
-                        DateTime tempDate = _currentDate2;
+      appBar: new AppBar(
+        title: new Text(widget.title),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(
+                top: 30.0,
+                bottom: 16.0,
+                left: 16.0,
+                right: 16.0,
+              ),
+              child: new Row(
+                children: <Widget>[
+                  FlatButton(
+                    child: Text('PREV'),
+                    onPressed: () {
+                      DateTime tempDate = _currentDate2;
 
-                        DateTime dateTime = new DateTime(tempDate.year,
-                            tempDate.month, (tempDate.day + 1) - tempDate.day);
+                      DateTime dateTime =
+                          new DateTime(tempDate.year, tempDate.month, (tempDate.day + 1) - tempDate.day);
 
-                        //print(" IsBefore=? " + lis.isBefore(dateTime).toString());
+                      //print(" IsBefore=? " + lis.isBefore(dateTime).toString());
 
-                        if (listDates.first.isBefore(dateTime)) {
-                          setState(() {
-                            _currentDate2 =
-                                _currentDate2.subtract(Duration(days: 30));
-                            _currentMonth =
-                                DateFormat.yMMM().format(_currentDate2);
-                          });
-                        } else
-                          print("button Desabled ");
-                      },
+                      if (listDates.first.isBefore(dateTime)) {
+                        setState(() {
+                          _currentDate2 = _currentDate2.subtract(Duration(days: 30));
+                          _currentMonth = DateFormat.yMMM().format(_currentDate2);
+                        });
+                      } else
+                        print("button Desabled ");
+                    },
+                  ),
+                  Expanded(
+                      child: Text(
+                    _currentMonth,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
                     ),
-                    Expanded(
-                        child: Text(
-                      _currentMonth,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
-                      ),
-                    )),
-                    FlatButton(
-                      child: Text('NEXT'),
-                      onPressed: () {
-                        print("LastDate" + listDates.first.toString());
-                         if (listDates.last.isAfter(_currentDate2)) {
-                          setState(() {
-                            _currentDate2 =
-                                _currentDate2.add(Duration(days: 30));
-                            _currentMonth =
-                                DateFormat.yMMM().format(_currentDate2);
-                          });
-                        }
-                      },
-                    )
-                  ],
-                ),
+                  )),
+                  FlatButton(
+                    child: Text('NEXT'),
+                    onPressed: () {
+                      print("LastDate" + listDates.first.toString());
+                      if (listDates.last.isAfter(_currentDate2)) {
+                        setState(() {
+                          _currentDate2 = _currentDate2.add(Duration(days: 30));
+                          _currentMonth = DateFormat.yMMM().format(_currentDate2);
+                        });
+                      }
+                    },
+                  )
+                ],
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.0),
-                child: _calendarCarouselNoHeader,
-              ),
-            ],
-          ),
-        ));
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              child: _calendarCarouselNoHeader,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

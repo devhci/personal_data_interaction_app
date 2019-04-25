@@ -51,6 +51,9 @@ class _PickViewState extends State<PickView> {
   List<Aspect> getAspectsAfterGivenDate(DateTime date) {
     List<Aspect> aspectsAfterGivenDate = [];
     for (Aspect aspect in allAspects) {
+      if (aspect.createDate.isAfter(date)) {
+        continue;
+      }
       if (aspect.deleteDate == null) {
         aspectsAfterGivenDate.add(aspect);
         continue;

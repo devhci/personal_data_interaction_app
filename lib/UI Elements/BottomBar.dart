@@ -3,6 +3,10 @@ import 'MyColors.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
 
 class BottomBar extends StatefulWidget {
+  TabElement tabElement;
+
+  BottomBar({this.tabElement});
+
   @override
   _BottomBarState createState() => _BottomBarState();
 }
@@ -94,48 +98,54 @@ class _BottomBarState extends State<BottomBar> {
   }
 
   Widget pickButton() {
-    return FlatButton(
-      onPressed: () => bloc.changeSelectedTabElement(TabElement.Pick),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Image(
-              image: AssetImage("assets/Pick_icon.png"),
-              height: 35,
+    return Opacity(
+      opacity: widget.tabElement == TabElement.Pick ? 1 : 0.6,
+      child: FlatButton(
+        onPressed: () => bloc.changeSelectedTabElement(TabElement.Pick),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Image(
+                image: AssetImage("assets/Pick_icon.png"),
+                height: 35,
+              ),
             ),
-          ),
-          Text(
-            "Pick",
-            style: TextStyle(color: MyColors.darkBlue),
-          )
-        ],
+            Text(
+              "Pick",
+              style: TextStyle(color: MyColors.darkBlue),
+            )
+          ],
+        ),
       ),
     );
   }
 
   Widget trackButton() {
-    return FlatButton(
-      onPressed: () => bloc.changeSelectedTabElement(TabElement.Track),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Icon(
-              Icons.timeline,
-              color: MyColors.darkGrey,
-              size: 35,
+    return Opacity(
+      opacity: widget.tabElement == TabElement.Track ? 1 : 0.6,
+      child: FlatButton(
+        onPressed: () => bloc.changeSelectedTabElement(TabElement.Track),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Icon(
+                Icons.timeline,
+                color: MyColors.darkGrey,
+                size: 35,
+              ),
             ),
-          ),
-          Text(
-            "Track",
-            style: TextStyle(color: MyColors.darkBlue),
-          )
-        ],
+            Text(
+              "Track",
+              style: TextStyle(color: MyColors.darkBlue),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -24,17 +24,37 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   StreamSubscription<Aspect> addAspectSubscription;
   StreamSubscription<DateTime> dateSubscription;
 
+  List<Aspect> allAspects = [];
   List<Aspect> aspects = [];
 
   void getAllData() async {
     util.getAllData("koriawas@dtu.dk").then((allData) {
       for (var aspect in allData) {
-        Aspect a = Aspect(aspect['name'], aspect['listOfDates'], aspect['color']);
+        Aspect a = Aspect(
+            name: aspect['name'],
+            stringDates: aspect['listOfDates'],
+            stringColor: aspect['color'],
+            stringDeleteDate: aspect['delete_date']);
         setState(() {
-          aspects.add(a);
+          allAspects.add(a);
         });
       }
+      aspects = getAspectsAfterGivenDate(util.formatter.parse(DateTime.now().toString()));
     });
+  }
+
+  List<Aspect> getAspectsAfterGivenDate(DateTime date) {
+    List<Aspect> aspectsAfterGivenDate = [];
+    for (Aspect aspect in allAspects) {
+      if (aspect.deleteDate == null) {
+        aspectsAfterGivenDate.add(aspect);
+        continue;
+      }
+      if (aspect.deleteDate.isAfter(date)) {
+        aspectsAfterGivenDate.add(aspect);
+      }
+    }
+    return aspectsAfterGivenDate;
   }
 
   @override
@@ -47,6 +67,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 150));
     animatedPosition = Tween(begin: Offset(0, 0), end: Offset(0, 1)).animate(animationController);
 
+    dateSubscription = bloc.date.listen((newDate) {
+      print("this is the new Date: $newDate");
+      setState(() {
+        aspects = getAspectsAfterGivenDate(newDate);
+      });
+    });
+
     selectedTabSubscription = bloc.tabElement.listen((tabElement) {
       switch (tabElement) {
         case TabElement.Pick:
@@ -54,6 +81,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             break;
           }
           if (selectedTab == TabElement.Track) {
+            // Set the date to today so the visualization starts at this month
+            bloc.changeDate(DateTime.now());
             setState(() {
               selectedTab = TabElement.Pick;
             });
@@ -66,6 +95,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             break;
           }
           setState(() {
+            // Set the date to today so the visualization starts at this month
+            bloc.changeDate(DateTime.now());
             selectedTab = TabElement.Track;
           });
           break;
@@ -120,7 +151,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     if (selectedTab == TabElement.AddDelete) {
       return EditModeBottomBar();
     }
-    return BottomBar();
+    return BottomBar(tabElement: selectedTab);
   }
 
 //  PreferredSize setAppBar() {

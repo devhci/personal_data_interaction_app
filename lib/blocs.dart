@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'aspect.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:personal_data_interaction_app/util/util.dart';
 
 class Bloc {
   final _selectedTabController = StreamController<TabElement>.broadcast();
   final _addAspectController = StreamController<Aspect>.broadcast();
   final _deleteAspectController = StreamController<Aspect>.broadcast();
-  final _dateController = BehaviorSubject<DateTime>();
+  final _dateController = BehaviorSubject<DateTime>.seeded(DateTime.now());
 
   // Add data to stream
   Function(TabElement) get changeSelectedTabElement => _selectedTabController.sink.add;
@@ -18,7 +19,7 @@ class Bloc {
   Stream<TabElement> get tabElement => _selectedTabController.stream;
   Stream<Aspect> get aspectsToAdd => _addAspectController.stream;
   Stream<Aspect> get aspectsToDelete => _deleteAspectController.stream;
-  Stream<DateTime> get date => _dateController.stream;
+  Stream<DateTime> get date => _dateController.stream.map((date) => util.formatter.parse(date.toString()));
 
   dispose() {
     _selectedTabController.close();

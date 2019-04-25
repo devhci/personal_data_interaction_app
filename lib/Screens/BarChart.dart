@@ -20,7 +20,11 @@ class _ChartState extends State<Chart> {
         _loading = false;
       });
       for (var aspect in allData) {
-        Aspect a = Aspect(aspect['name'], aspect['listOfDates'], aspect['color']);
+        Aspect a = Aspect(
+            name: aspect['name'],
+            stringDates: aspect['listOfDates'],
+            stringColor: aspect['color'],
+            stringDeleteDate: aspect['delete_date']);
         setState(() {
           aspects.add(a);
         });
@@ -38,13 +42,28 @@ class _ChartState extends State<Chart> {
   }
 
   Widget bar(Aspect aspect) {
+    // TODO calculate the aspect's count
+    int count = 0;
+
+    for (DateTime aspectDate in aspect.dates) {
+      if (aspectDate.month == this.date.month && aspectDate.year == this.date.year) {
+        count++;
+      }
+    }
+
+    if (count == 0) {
+      // If there are no dates in the given month
+      return Container();
+    }
+
     return Expanded(
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: aspect.dateTimeDates.length,
+        itemCount: count, //aspect.dates.length,
         itemBuilder: (BuildContext context, int index) {
-          if (index == aspect.dateTimeDates.length - 1) {
+          if (index == count - 1) {
+            //aspect.dates.length - 1) {
             return Padding(
               padding: const EdgeInsets.all(1.0),
               child: Row(
@@ -56,7 +75,7 @@ class _ChartState extends State<Chart> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
-                    child: Text(aspect.dateTimeDates.length.toString()),
+                    child: Text(count.toString()), //dates.length.toString()),
                   ),
                 ],
               ),

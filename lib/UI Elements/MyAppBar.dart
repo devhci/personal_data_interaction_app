@@ -1,11 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'MyColors.dart';
+import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
-
-//SPARE CODE:
-
-//          bloc.changeDate(date.add(Duration(days: 1)));
+import 'dart:async';
 
 class MyAppBar extends StatefulWidget {
   final TabElement tabElement;
@@ -24,10 +21,25 @@ class _MyAppBarState extends State<MyAppBar> {
   Function onLeftButtonPressed;
   Function onRightButtonPressed;
 
+  StreamSubscription<DateTime> dateSubscripton;
+
   @override
   void initState() {
     date = DateTime.now();
+    dateSubscripton = bloc.date.listen((newDate) {
+      setState(() {
+        date = newDate;
+      });
+    });
+
     super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    dateSubscripton.cancel();
+    super.dispose();
   }
 
   @override
@@ -45,14 +57,10 @@ class _MyAppBarState extends State<MyAppBar> {
         rightButtonText = "Next\nDay";
         middleText = "${date.day.toString()} ${monthFormatter.format(date)}";
         onLeftButtonPressed = () {
-          setState(() {
-            date = date.add(Duration(days: -1));
-          });
+          bloc.changeDate(date.add(Duration(days: -1)));
         };
         onRightButtonPressed = () {
-          setState(() {
-            date = date.add(Duration(days: 1));
-          });
+          bloc.changeDate(date.add(Duration(days: 1)));
         };
         break;
       case TabElement.Track:
@@ -60,14 +68,10 @@ class _MyAppBarState extends State<MyAppBar> {
         rightButtonText = "Next\nMonth";
         middleText = "${monthFormatter.format(date)}";
         onLeftButtonPressed = () {
-          setState(() {
-            date = date.add(Duration(days: -31));
-          });
+          bloc.changeDate(date.add(Duration(days: -31)));
         };
         onRightButtonPressed = () {
-          setState(() {
-            date = date.add(Duration(days: 31));
-          });
+          bloc.changeDate(date.add(Duration(days: 31)));
         };
         break;
     }

@@ -86,7 +86,6 @@ class _AspectCellState extends State<AspectCell> {
                           color: MyColors.darkGrey,
                         ),
                         onPressed: () {
-                          //TODO delete
                           db.deleteItem("koriawas@dtu.dk", widget.aspect.name);
                           bloc.deleteAspect(widget.aspect);
                         })

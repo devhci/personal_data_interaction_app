@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:personal_data_interaction_app/util/util.dart';
 
 class Aspect {
   String name;
   Color color;
-  List<DateTime> dateTimeDates = [];
+  List<DateTime> dates = [];
+  DateTime deleteDate;
 
-  Aspect(String name, List<dynamic> stringDates, String stringColor) {
-    var formatter = DateFormat('yyyy-MM-dd');
-
+  Aspect(
+      {@required String name,
+      @required List<dynamic> stringDates,
+      @required String stringColor,
+      @required String stringDeleteDate}) {
     this.name = name;
-
-    color = Color(int.parse(stringColor, radix: 16));
+    this.color = Color(int.parse(stringColor, radix: 16));
+    if (stringDeleteDate == "") {
+      deleteDate = null;
+    } else {
+      this.deleteDate = util.formatter.parse(stringDeleteDate);
+    }
 
     for (dynamic date in stringDates) {
       date = date.toString();
-      dateTimeDates.add(formatter.parse(date));
+      this.dates.add(util.formatter.parse(date));
     }
   }
 }

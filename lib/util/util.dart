@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_data_interaction_app/firebase/DB.dart';
+import 'package:intl/intl.dart';
 
 class Util {
   DB _db = DB();
@@ -51,6 +52,8 @@ class Util {
 
     return list;
   }
+
+  var formatter = new DateFormat('yyyy-MM-dd');
 }
 
 final Util util = Util();

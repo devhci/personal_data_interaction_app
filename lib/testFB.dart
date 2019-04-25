@@ -23,7 +23,7 @@ class TestClass extends StatelessWidget {
   Util util = Util();
 
   void add() {
-   // _db.update("koriawas@dtu.dk", "thisiswhatwecreated");
+    // _db.update("koriawas@dtu.dk", "thisiswhatwecreated");
   }
 
   void remove() {
@@ -31,7 +31,7 @@ class TestClass extends StatelessWidget {
   }
 
   void createNewItem() {
-    _db.createNewItem("koriawas@dtu.dk", "thisiswhatwecreated","#4767536");
+    _db.createNewItem("koriawas@dtu.dk", "thisiswhatwecreated", "#4767536");
   }
 
   void deleteItem() {
@@ -47,8 +47,7 @@ class TestClass extends StatelessWidget {
   }
 
   void giveListOfDateForCalenderVisualization() async {
-    DocumentSnapshot documentSnapshot =
-        await _db.getDatesFor("koriawas@dtu.dk", "Playing football");
+    DocumentSnapshot documentSnapshot = await _db.getDatesFor("koriawas@dtu.dk", "Playing football");
 
     var a = documentSnapshot.data.remove("timestemp");
 
@@ -57,7 +56,6 @@ class TestClass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text("Testing Firebase"),

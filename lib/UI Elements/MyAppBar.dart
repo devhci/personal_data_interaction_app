@@ -20,8 +20,7 @@ class _MyAppBarState extends State<MyAppBar> {
   String middleText;
   Function onLeftButtonPressed;
   Function onRightButtonPressed;
-//  Duration durationForVisibility;
-//  bool shouldNextButtonBeVisible;
+  bool shouldNextButtonBeVisible;
 
   StreamSubscription<DateTime> dateSubscription;
 
@@ -63,6 +62,9 @@ class _MyAppBarState extends State<MyAppBar> {
         onRightButtonPressed = () {
           bloc.changeDate(date.add(Duration(days: 1)));
         };
+        setState(() {
+          shouldNextButtonBeVisible = (date.difference(DateTime.now()).inDays == 0);
+        });
         break;
       case TabElement.Track:
         leftButtonText = "Previous\nMonth";
@@ -74,6 +76,9 @@ class _MyAppBarState extends State<MyAppBar> {
         onRightButtonPressed = () {
           bloc.changeDate(date.add(Duration(days: 31)));
         };
+        setState(() {
+          shouldNextButtonBeVisible = (date.month == DateTime.now().month && date.year == DateTime.now().year);
+        });
         break;
     }
 
@@ -155,7 +160,7 @@ class _MyAppBarState extends State<MyAppBar> {
 
   Widget nextButton() {
     return Opacity(
-      opacity: (widget.tabElement == TabElement.AddDelete || date.difference(DateTime.now()).inDays == 0) ? 0 : 1,
+      opacity: (widget.tabElement == TabElement.AddDelete || shouldNextButtonBeVisible) ? 0 : 1,
       child: Container(
         child: FlatButton(
           child: Row(
@@ -173,7 +178,7 @@ class _MyAppBarState extends State<MyAppBar> {
               ),
             ],
           ),
-          onPressed: date.difference(DateTime.now()).inDays == 0 ? null : () => onRightButtonPressed(),
+          onPressed: shouldNextButtonBeVisible ? null : () => onRightButtonPressed(),
         ),
       ),
     );

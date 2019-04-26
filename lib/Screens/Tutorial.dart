@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Tutorial extends StatefulWidget {
   @override
@@ -12,7 +13,13 @@ class _TutorialState extends State<Tutorial> {
       color: MyColors.darkBlue,
       child: Column(
         children: <Widget>[
-          Text("Hello"),
+          Padding(
+            padding: const EdgeInsets.all(100.0),
+            child: Text(
+              "Hello",
+              style: TextStyle(fontSize: 34, fontWeight: FontWeight.w500),
+            ),
+          ),
           Text("Welcome to the Good Day app"),
           Text("According to psychologists, doing pleasant activites is a key factor for happiness."),
           Text("By actively trying to do things that you enjoy, you can improve their well-being."),
@@ -48,6 +55,8 @@ class _TutorialState extends State<Tutorial> {
             color: MyColors.darkGrey,
             text: "Start",
             onPressed: () {
+              // TODO: set tutorial to true
+              setTutorialCompletion();
               Navigator.of(context).pushNamed('home');
             },
           ),
@@ -67,5 +76,13 @@ class _TutorialState extends State<Tutorial> {
         ],
       ),
     );
+  }
+
+  void setTutorialCompletion() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.get("tutorialCompletion") == null) {
+      prefs.setBool("tutorialCompletion", true);
+    }
+    print("tutorial completion has been set to true");
   }
 }

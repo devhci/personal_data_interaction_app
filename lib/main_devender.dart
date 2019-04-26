@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
+    show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -20,11 +21,25 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState(title, dateTime);
 }
 
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   String itemName;
   DateTime dateTime;
 
   DateTime firstDate, lastDate;
+
+  String color = "";
 
   List<DateTime> listDates = List<DateTime>();
 
@@ -35,37 +50,35 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime _currentDate2;
   String _currentMonth = '';
 
-  static Widget _eventIcon = new Container(
-      decoration: new BoxDecoration(
-    color: Color.fromRGBO(156, 158, 222, .5),
-    shape: BoxShape.rectangle,
-
-    /*  gradient: new LinearGradient(
-          colors: [Colors.red, Colors.cyan],
-          begin: Alignment.centerRight,
-          end: Alignment.centerLeft
-      ),*/
-
-    /*child: new Icon(
-      Icons.person,
-      color: Colors.amber,
-    ),*/
-  ));
+  Widget _eventIcon;
 
   EventList<Event> _markedDateMap = new EventList<Event>(
     events: {},
   );
 
-  CalendarCarousel _calendarCarousel, _calendarCarouselNoHeader;
+  CalendarCarousel _calendarCarouselNoHeader;
 
   @override
   void initState() {
-    util.giveListOfDateForCalenderVisualization("koriawas@dtu.dk", this.itemName).then((list) {
+    util
+        .giveListOfDateForCalenderVisualization(
+        "koriawas@dtu.dk", this.itemName)
+        .then((map) {
+      List<String> list =
+      map.remove("list").replaceAll("[", "").replaceAll("]", "").split(",");
+
+      color = map.remove("color");
+
       print("inside listDate" + list.toString());
 
-      for (var v in list) {
-        var formatter = new DateFormat('yyyy-MM-dd');
+      this._eventIcon = new Container(
+          decoration: new BoxDecoration(
+            // color: Color.fromRGBO(156, 158, 222, .5),
+            color: Color(int.parse(color, radix: 16)),
+            shape: BoxShape.rectangle,
+          ));
 
+      for (var v in list) {
         print("dates inside init:" + v);
 
         List<String> date = v.toString().split("-");
@@ -74,92 +87,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
         setState(() {
           _markedDateMap.add(
-              new DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
+              new DateTime(
+                  int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
               new Event(
-                date: new DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
+                date: new DateTime(
+                    int.parse(date[0]), int.parse(date[1]), int.parse(date[2])),
                 title: 'Event 5',
                 icon: _eventIcon,
               ));
 
-          listDates.add(new DateTime(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])));
+          listDates.add(new DateTime(
+              int.parse(date[0]), int.parse(date[1]), int.parse(date[2])));
         });
       }
       listDates.sort();
 
       print("sorted List" + listDates.toString());
+
+      print("color :" + color);
     });
-
-    /*List<String> fDate = list.removeAt(0).split("-");
-
-      this.firstDate = new DateTime(
-          int.parse(fDate[0]), int.parse(fDate[1]), int.parse(fDate[2]));
-
-      List<String> lDate = list.removeLast().split("-");
-
-      this.lastDate = new DateTime(
-          int.parse(lDate[0]), int.parse(lDate[1]), int.parse(lDate[2]));
-    });*/
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    /* _calendarCarousel = CalendarCarousel<Event>(
-      onDayPressed: (DateTime date, List<Event> events) {
-       */ /* this.setState(() => _currentDate = date);
-        events.forEach((event) => print(event.title));*/ /*
-      },
-
-      //todayButtonColor: Colors.red,
-      todayBorderColor: Colors.white70,
-      weekendTextStyle: TextStyle(
-        color: Colors.black12,
-         // fontSize: 5
-      ),
-     // nextMonthDayBorderColor: Colors.green,
-      //thisMonthDayBorderColor: Colors.grey,
-      showWeekDays: true,
-      weekFormat: false,
-      weekdayTextStyle: TextStyle(color: Colors.black, fontSize: 15),
-      daysTextStyle:TextStyle(color: Colors.black12) ,
-      showHeaderButton:true,
-
-      minSelectedDate: ,
-
-      markedDatesMap: _markedDateMap,
-      height: 400.0,
-      selectedDateTime: _currentDate2,
-
-      /// Color of current date
-      selectedDayBorderColor: Colors.green ,
-        inactiveDaysTextStyle:TextStyle(color: Colors.black12),
-       leftButtonIcon: FlatButton(onPressed: () => print("hello devender"), child: Container()),
-
-
-
-      iconColor: Colors.black,
-      customGridViewPhysics: NeverScrollableScrollPhysics(),
-      markedDateShowIcon: true,
-      markedDateIconMaxShown: 2,
-    //  minSelectedDate: _currentDate,
-     // maxSelectedDate: _currentDate.add(Duration(days: 60)),
-      todayTextStyle: TextStyle(
-        color: Colors.red,
-      ),
-      markedDateIconBuilder: (event) {
-        return event.icon;
-      },
-     // todayBorderColor: Colors.green,
-      markedDateMoreShowTotal: false,
-    );*/
-
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      //todayBorderColor: Colors.green,
-      onDayPressed: (DateTime date, List<Event> events) {
-        this.setState(() => _currentDate2 = date);
-        events.forEach((event) => print(event.title));
-      },
       weekendTextStyle: TextStyle(color: Colors.black, fontSize: 15),
       thisMonthDayBorderColor: Colors.grey,
       weekFormat: false,
@@ -170,6 +123,19 @@ class _MyHomePageState extends State<MyHomePage> {
       markedDateShowIcon: true,
       markedDateIconMaxShown: 2,
       markedDateMoreShowTotal: false,
+      isScrollable: false,
+      weekdayTextStyle: TextStyle(color: Colors.black),
+
+
+
+      //onDayPressed: null,
+      nextMonthDayBorderColor: Colors.white,
+
+      /// Removes problem of min select value
+
+      minSelectedDate: _currentDate2,
+      maxSelectedDate: _currentDate2,
+
       // showHeader:false,
       // daysTextStyle: TextStyle(fontSize: 25),
       showHeader: false,
@@ -181,8 +147,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       //today button
-      todayButtonColor: Colors.green,
-      selectedDayButtonColor: Colors.white70,
+      todayButtonColor: Color.fromRGBO(255,255, 255, -2),
+      selectedDayButtonColor: Color.fromRGBO(255,255, 255, -2),
       selectedDayTextStyle: TextStyle(
         color: Colors.black,
       ),
@@ -209,48 +175,60 @@ class _MyHomePageState extends State<MyHomePage> {
                 left: 16.0,
                 right: 16.0,
               ),
-              child: new Row(
-                children: <Widget>[
-                  FlatButton(
-                    child: Text('PREV'),
-                    onPressed: () {
-                      DateTime tempDate = _currentDate2;
+              child: Center(
+                child: new Row(
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text('PREV'),
+                      onPressed: () {
+                        DateTime tempDate = _currentDate2;
 
-                      DateTime dateTime =
-                          new DateTime(tempDate.year, tempDate.month, (tempDate.day + 1) - tempDate.day);
+                        DateTime dateTime = new DateTime(tempDate.year,
+                            tempDate.month, (tempDate.day + 1) - tempDate.day);
 
-                      //print(" IsBefore=? " + lis.isBefore(dateTime).toString());
+                        //print(" IsBefore=? " + lis.isBefore(dateTime).toString());
 
-                      if (listDates.first.isBefore(dateTime)) {
-                        setState(() {
-                          _currentDate2 = _currentDate2.subtract(Duration(days: 30));
-                          _currentMonth = DateFormat.yMMM().format(_currentDate2);
-                        });
-                      } else
-                        print("button Desabled ");
-                    },
-                  ),
-                  Expanded(
-                      child: Text(
-                    _currentMonth,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
+                        if (listDates.first.isBefore(dateTime)) {
+                          setState(() {
+                            _currentDate2 =
+                                _currentDate2.subtract(Duration(days: 30));
+                            _currentMonth =
+                                DateFormat.yMMM().format(_currentDate2);
+                          });
+                        } else
+                          print("button Desabled ");
+                      },
                     ),
-                  )),
-                  FlatButton(
-                    child: Text('NEXT'),
-                    onPressed: () {
-                      print("LastDate" + listDates.first.toString());
-                      if (listDates.last.isAfter(_currentDate2)) {
-                        setState(() {
-                          _currentDate2 = _currentDate2.add(Duration(days: 30));
-                          _currentMonth = DateFormat.yMMM().format(_currentDate2);
-                        });
-                      }
-                    },
-                  )
-                ],
+
+
+                    Expanded(
+
+
+                        child: Text(
+                          _currentMonth,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
+                        )),
+
+
+                    FlatButton(
+                      child: Text('NEXT'),
+                      onPressed: () {
+                        print("LastDate" + listDates.first.toString());
+                        if (listDates.last.isAfter(_currentDate2)) {
+                          setState(() {
+                            _currentDate2 =
+                                _currentDate2.add(Duration(days: 30));
+                            _currentMonth =
+                                DateFormat.yMMM().format(_currentDate2);
+                          });
+                        }
+                      },
+                    )
+                  ],
+                ),
               ),
             ),
             Container(

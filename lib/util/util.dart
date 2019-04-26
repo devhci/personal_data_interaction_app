@@ -6,18 +6,29 @@ import 'package:intl/intl.dart';
 class Util {
   DB _db = DB();
 
-  Future<List<String>> giveListOfDateForCalenderVisualization(String username, String itemName) async {
+  Future<HashMap<String, dynamic >> giveListOfDateForCalenderVisualization(String username, String itemName) async {
     List<String> dates = List<String>();
+
+    HashMap<String, dynamic >  map= HashMap<String,String>();
+
+
     DocumentSnapshot documentSnapshot = await _db.getDatesFor(username,itemName);
     var a = documentSnapshot.data.remove("timestemp");
+
+    var color= documentSnapshot.data.remove("color");
+
+
 
     print(a);
 
     List<String> list = a.toString().replaceAll("[", "").replaceAll("]", "").split(",");
 
-    print(list);
+    map["list"]=a.toString();
+    map["color"]=color;
 
-    return list;
+//    print(list.toString());
+
+    return map;
   }
 
   Future<List<HashMap<String, dynamic>>> getAllData(String userName) async {

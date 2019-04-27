@@ -21,61 +21,16 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   AnimationController animationController;
 
   StreamSubscription<TabElement> selectedTabSubscription;
-//  StreamSubscription<Aspect> deleteAspectSubscription;
-//  StreamSubscription<Aspect> addAspectSubscription;
-//  StreamSubscription<DateTime> dateSubscription;
-
-//  List<Aspect> allAspects = [];
   List<Aspect> aspects = [];
-
-//  void getAllData() async {
-//    util.getAllData("koriawas@dtu.dk").then((allData) {
-//      for (var aspect in allData) {
-//        Aspect a = Aspect(
-//            name: aspect['name'],
-//            stringDates: aspect['listOfDates'],
-//            stringColor: aspect['color'],
-//            stringDeleteDate: aspect['delete_date']);
-//        setState(() {
-//          allAspects.add(a);
-//        });
-//      }
-//      aspects = getAspectsAfterGivenDate(util.formatter.parse(DateTime.now().toString()));
-//    });
-//  }
-//
-//  List<Aspect> getAspectsAfterGivenDate(DateTime date) {
-//    List<Aspect> aspectsAfterGivenDate = [];
-//    for (Aspect aspect in allAspects) {
-//      if (aspect.deleteDate == null) {
-//        aspectsAfterGivenDate.add(aspect);
-//        continue;
-//      }
-//      if (aspect.deleteDate.isAfter(date)) {
-//        aspectsAfterGivenDate.add(aspect);
-//      }
-//    }
-//    return aspectsAfterGivenDate;
-//  }
 
   @override
   initState() {
     date = DateTime.now();
-//    getAllData();
-//    getDeviceId();
 
     selectedTab = TabElement.Pick;
 
     animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 150));
     animatedPosition = Tween(begin: Offset(0, 0), end: Offset(0, 1)).animate(animationController);
-
-//    dateSubscription = bloc.date.listen((newDate) {
-//      print("this is the new Date: $newDate");
-//      setState(() {
-//        aspects = getAspectsAfterGivenDate(newDate);
-//        date = newDate;
-//      });
-//    });
 
     selectedTabSubscription = bloc.tabElement.listen((tabElement) {
       // Set the date today so every screen will start from today
@@ -115,24 +70,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           break;
       }
     });
-
-//    addAspectSubscription = bloc.aspectsToAdd.listen((aspectToAdd) {
-//      setState(() {
-//        aspects.add(aspectToAdd);
-//      });
-//      print(aspects);
-//    });
-//
-//    deleteAspectSubscription = bloc.aspectsToDelete.listen((aspectToDelete) {
-//      try {
-//        setState(() {
-//          aspects.remove(aspectToDelete);
-//        });
-//        print(aspects);
-//      } catch (e) {
-//        print(e);
-//      }
-//    });
 
     super.initState();
   }
@@ -175,10 +112,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           child: setBottomBar(),
           position: animatedPosition,
         ),
-//        floatingActionButton: FloatingActionButton(onPressed: () {
-//          getDeviceId();
-//          util.getAllData("koriawas@dtu.dk");
-//        }),
       ),
     );
   }
@@ -186,21 +119,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     selectedTabSubscription.cancel();
-//    addAspectSubscription.cancel();
-//    deleteAspectSubscription.cancel();
-//    dateSubscription.cancel();
     super.dispose();
-  }
-
-  void getDeviceId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    if (prefs.get("deviceId") == null) {
-      print("Setting Shared preferences");
-      String deviceId = await UniqueIdentifier.serial;
-      prefs.setString("deviceId", deviceId);
-    }
-
-    print("device Id from Shared pref" + prefs.get("deviceId"));
   }
 }

@@ -1,19 +1,17 @@
 import 'dart:collection';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:personal_data_interaction_app/util/util.dart';
 
 class DB {
   var now = new DateTime.now();
-  var formatter = new DateFormat('yyyy-MM-dd');
 
   List<String> dates = List<String>();
 
   List<HashMap<String, String>> list;
 
-  Future<dynamic> getDoc() {}
-
-  Future<void> createNewItem(String username, String itemName, String color, String create_date) {
+  void createNewItem(String username, String itemName, String color, String create_date) {
+    print("we are inside createNewItem with this username: $username");
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
     map["timestemp"] = Timestamp.now();
@@ -33,10 +31,10 @@ class DB {
     Firestore.instance.collection('users').document(username).collection('data').document(itemName).setData(map);
   }
 
-  Future<void> deleteItem(String username, String itemName) {
+  void deleteItem(String username, String itemName) {
     HashMap<String, dynamic> map = HashMap<String, dynamic>();
 
-    map["delete_date"] = formatter.format(now);
+    map["delete_date"] = util.formatter.format(now);
 
     Firestore.instance.collection('users').document(username).collection('data').document(itemName).updateData(map);
   }
@@ -53,7 +51,7 @@ class DB {
     return await Firestore.instance.collection("users").document(username).collection("data").document(itemName).get();
   }
 
-  Future<void> remove(String username, String documentName, DateTime datetime) {
+  void remove(String username, String documentName, DateTime datetime) {
     final DocumentReference postRef =
         Firestore.instance.collection('users').document(username).collection('data').document(documentName);
 
@@ -64,13 +62,13 @@ class DB {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.data.containsKey("timestemp")) {
           await tx.update(postRef, <String, dynamic>{
-            'timestemp': FieldValue.arrayRemove([formatter.format(datetime)])
+            'timestemp': FieldValue.arrayRemove([util.formatter.format(datetime)])
           });
         }
       });
   }
 
-  Future<void> update(String username, String documentName, DateTime datetime) {
+  void update(String username, String documentName, DateTime datetime) {
     final DocumentReference postRef =
         Firestore.instance.collection('users').document(username).collection('data').document(documentName);
 
@@ -81,7 +79,7 @@ class DB {
         DocumentSnapshot postSnapshot = await tx.get(postRef);
         if (postSnapshot.data.containsKey("timestemp")) {
           await tx.update(postRef, <String, dynamic>{
-            'timestemp': FieldValue.arrayUnion([formatter.format(datetime)])
+            'timestemp': FieldValue.arrayUnion([util.formatter.format(datetime)])
           });
         }
       });

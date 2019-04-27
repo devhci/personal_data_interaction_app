@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'MyColors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
-import '../aspect.dart';
 import 'package:personal_data_interaction_app/firebase/DB.dart';
-import 'dart:async';
+import 'package:personal_data_interaction_app/util/util.dart';
+import 'package:personal_data_interaction_app/aspect.dart';
 
 class AspectCell extends StatefulWidget {
   final Aspect aspect;
@@ -49,9 +49,9 @@ class _AspectCellState extends State<AspectCell> {
               ? null
               : () {
                   if (!selected) {
-                    db.update("koriawas@dtu.dk", widget.aspect.name, widget.date);
+                    db.update(Util.username, widget.aspect.name, widget.date);
                   } else {
-                    db.remove("koriawas@dtu.dk", widget.aspect.name, widget.date);
+                    db.remove(Util.username, widget.aspect.name, widget.date);
                   }
                   setState(() {
                     selected = !selected;
@@ -81,18 +81,17 @@ class _AspectCellState extends State<AspectCell> {
                           color: MyColors.darkGrey,
                         ),
                         onPressed: () {
-                          db.deleteItem("koriawas@dtu.dk", widget.aspect.name);
+                          db.deleteItem(Util.username, widget.aspect.name);
                           bloc.deleteAspect(widget.aspect);
                         })
                     : CupertinoSwitch(
                         value: selected,
                         onChanged: (value) {
                           if (!selected) {
-                            db.update("koriawas@dtu.dk", widget.aspect.name, widget.date);
+                            db.update(Util.username, widget.aspect.name, widget.date);
                           } else {
-                            db.remove("koriawas@dtu.dk", widget.aspect.name, widget.date);
+                            db.remove(Util.username, widget.aspect.name, widget.date);
                           }
-                          print("switcher new value is: $value");
                           setState(() {
                             selected = !selected;
                           });

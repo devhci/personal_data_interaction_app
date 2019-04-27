@@ -18,7 +18,7 @@ class _ChartState extends State<Chart> {
   StreamSubscription<DateTime> dateSubscription;
 
   void getAllData() async {
-    util.getAllData("koriawas@dtu.dk").then((allData) {
+    util.getAllData(Util.username).then((allData) {
       setState(() {
         _loading = false;
       });
@@ -112,17 +112,16 @@ class _ChartState extends State<Chart> {
     }
 
     return GestureDetector(
-      onTap: () {
-        // TODO: navigate to calendar view with this "aspects[index].name"
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => MyHomePage(
-                  title: aspects[index].name,
-                  dateTime: date,
-                ),
-          ),
-        );
-      },
+//      onTap: () {
+//        Navigator.of(context).push(
+//          MaterialPageRoute(
+//            builder: (context) => MyHomePage(
+//                  title: aspects[index].name,
+//                  dateTime: date,
+//                ),
+//          ),
+//        );
+//      },
       child: Container(
           height: 80,
           child: Column(

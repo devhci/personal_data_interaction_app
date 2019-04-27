@@ -11,7 +11,7 @@ class _TutorialState extends State<Tutorial> {
   Container page1() {
     return Container(
       color: MyColors.darkBlue,
-      child: Column(
+      child: ListView(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(100.0),
@@ -65,6 +65,14 @@ class _TutorialState extends State<Tutorial> {
     );
   }
 
+  void setTutorialCompletion() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.get("tutorialCompletion") == null) {
+      prefs.setBool("tutorialCompletion", true);
+    }
+    print("tutorial completion has been set to true");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,13 +84,5 @@ class _TutorialState extends State<Tutorial> {
         ],
       ),
     );
-  }
-
-  void setTutorialCompletion() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.get("tutorialCompletion") == null) {
-      prefs.setBool("tutorialCompletion", true);
-    }
-    print("tutorial completion has been set to true");
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'MyColors.dart';
+import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'RoundedButton.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
 import '../aspect.dart';
 import 'package:personal_data_interaction_app/firebase/DB.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNewAspectCell extends StatefulWidget {
   @override
@@ -64,21 +64,24 @@ class _AddNewAspectCellState extends State<AddNewAspectCell> {
                 color: MyColors.darkBlue,
                 onPressed: validate
                     ? () {
+//                        util.getDeviceId().then((username) {
+//                          print("username: $username");
+//                          db.createNewItem(
+//                            username,
+//                            textEditingController.value.text,
+//                            color.value.toRadixString(16),
+//                            util.formatter.format(DateTime.now()),
+//                          );
+//                          bloc.sendAddAspectStatus(true);
+//                          FocusScope.of(context).requestFocus(FocusNode());
+//                        });
+                        bloc.sendAddAspectStatus(true);
                         db.createNewItem(
-                          "koriawas@dtu.dk",
+                          Util.username,
                           textEditingController.value.text,
                           color.value.toRadixString(16),
                           util.formatter.format(DateTime.now()),
                         );
-                        bloc.addAspect(
-                          Aspect(
-                              name: textEditingController.value.text,
-                              stringDates: [],
-                              stringColor: color.value.toRadixString(16),
-                              stringDeleteDate: "",
-                              stringCreateDate: "2017-04-01"),
-                        );
-                        FocusScope.of(context).requestFocus(FocusNode());
                       }
                     : null,
                 text: "Add",

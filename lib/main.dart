@@ -1,20 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
 import 'package:personal_data_interaction_app/Screens/screens.dart';
-import 'home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-Future<bool> getTutorialCompletion() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  if (prefs.get("tutorialCompletion") != null) {
-    return prefs.getBool("tutorialCompletion");
-  }
-  return false;
-}
+//import 'package:unique_identifier/unique_identifier.dart';
+import 'package:flutter/material.dart';
+import 'home.dart';
 
 void main() {
-  getTutorialCompletion().then((value) => runApp(MyApp(isTutorialCompleted: value)));
+  getTutorialCompletion().then((isTutorialCompleted) => runApp(MyApp(isTutorialCompleted: isTutorialCompleted)));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,51 +26,28 @@ class MyApp extends StatelessWidget {
         canvasColor: Colors.transparent,
       ),
       // TODO: check if user has been through tutorial
-      initialRoute: 'tutorial',//isTutorialCompleted ? 'home' : 'tutorial',
+      initialRoute: isTutorialCompleted ? 'home' : 'tutorial',
     );
   }
 }
 
-//class MyApp extends StatefulWidget {
-//  @override
-//  _MyAppState createState() => _MyAppState();
-//}
+Future<bool> getTutorialCompletion() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-//class _MyAppState extends State<MyApp> {
-//  bool tutorialCompletion = false;
+  if (prefs.get("tutorialCompletion") != null) {
+    return prefs.getBool("tutorialCompletion");
+  }
+  return false;
+}
+
+//void getDeviceId() async {
+//  SharedPreferences prefs = await SharedPreferences.getInstance();
 //
-//  @override
-//  void initState() {
-//    getTutorialCompletion().then((value) {
-//      setState(() {
-//        tutorialCompletion = value;
-//      });
-//    });
-//    super.initState();
+//  if (prefs.get("deviceId") == null) {
+//    print("Setting Shared preferences");
+//    String deviceId = await UniqueIdentifier.serial;
+//    prefs.setString("deviceId", deviceId);
 //  }
 //
-//  @override
-//  Widget build(BuildContext context) {
-//    return MaterialApp(
-//      routes: {
-//        'tutorial': (context) => Tutorial(),
-//        'home': (context) => Home(),
-//      },
-//      theme: ThemeData.light().copyWith(
-//        primaryColor: MyColors.darkBlue,
-//        canvasColor: Colors.transparent,
-//      ),
-//      // TODO: check if user has been through tutorial
-//      initialRoute: tutorialCompletion ? 'home' : 'tutorial',
-//    );
-//  }
-//
-//  Future<bool> getTutorialCompletion() async {
-//    SharedPreferences prefs = await SharedPreferences.getInstance();
-//
-//    if (prefs.get("tutorialCompletion") != null) {
-//      return prefs.getBool("tutorialCompletion");
-//    }
-//    return false;
-//  }
+//  print("device Id from Shared pref" + prefs.get("deviceId"));
 //}

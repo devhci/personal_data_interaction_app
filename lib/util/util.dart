@@ -2,31 +2,31 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_data_interaction_app/firebase/DB.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Util {
-  DB _db = DB();
+  static String username = "julia";
+  var formatter = new DateFormat('yyyy-MM-dd');
 
-  Future<HashMap<String, dynamic >> giveListOfDateForCalenderVisualization(String username, String itemName) async {
-    List<String> dates = List<String>();
+  Future<String> getDeviceId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    HashMap<String, dynamic >  map= HashMap<String,String>();
+    if (prefs.get("deviceId") != null) {
+      return prefs.getString("deviceId");
+    }
+    return "";
+  }
 
+  Future<HashMap<String, dynamic>> giveListOfDateForCalenderVisualization(String username, String itemName) async {
+    HashMap<String, dynamic> map = HashMap<String, String>();
 
-    DocumentSnapshot documentSnapshot = await _db.getDatesFor(username,itemName);
+    DocumentSnapshot documentSnapshot = await db.getDatesFor(username, itemName);
     var a = documentSnapshot.data.remove("timestemp");
 
-    var color= documentSnapshot.data.remove("color");
+    var color = documentSnapshot.data.remove("color");
 
-
-
-    print(a);
-
-    List<String> list = a.toString().replaceAll("[", "").replaceAll("]", "").split(",");
-
-    map["list"]=a.toString();
-    map["color"]=color;
-
-//    print(list.toString());
+    map["list"] = a.toString();
+    map["color"] = color;
 
     return map;
   }
@@ -34,37 +34,23 @@ class Util {
   Future<List<HashMap<String, dynamic>>> getAllData(String userName) async {
     List<HashMap<String, dynamic>> list = List<HashMap<String, dynamic>>();
 
-    QuerySnapshot querySnapshot = await _db.getData(userName);
+    QuerySnapshot querySnapshot = await db.getData(userName);
 
     for (var u in querySnapshot.documents) {
       HashMap<String, dynamic> items = HashMap<String, dynamic>();
 
       items["name"] = u.documentID;
-    items["color"] = u.data.remove("color");
-    items["delete_date"] = u.data.remove("delete_date");
-    items["create_date"]=u.data.remove("create_date");
+      items["color"] = u.data.remove("color");
+      items["delete_date"] = u.data.remove("delete_date");
+      items["create_date"] = u.data.remove("create_date");
 
-    //int count = 0;
+      items["listOfDates"] = u.data.remove("timestemp");
 
-    items["listOfDates"] = u.data.remove("timestemp");
-
-    /* for (var value in u.data.remove(“timestemp”)) {
-       //print(value);
-
-       count++;
-     }*/
-
-    // items[“count”] = count.toString();
-
-    list.add(items);
-  }
-
-//    print(list.toString());
+      list.add(items);
+    }
 
     return list;
   }
-
-  var formatter = new DateFormat('yyyy-MM-dd');
 }
 
 final Util util = Util();

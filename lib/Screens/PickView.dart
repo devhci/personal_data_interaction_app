@@ -20,11 +20,11 @@ class _PickViewState extends State<PickView> {
   bool _loading;
 
   StreamSubscription<DateTime> dateSubscription;
-  StreamSubscription<Aspect> addAspectSubscription;
+  StreamSubscription<bool> addAspectStatusSubscription;
   StreamSubscription<Aspect> deleteAspectSubscription;
 
   void getAllData() async {
-    util.getAllData("koriawas@dtu.dk").then((allData) {
+    util.getAllData(Util.username).then((allData) {
       setState(() {
         aspects = [];
         allAspects = [];
@@ -77,7 +77,7 @@ class _PickViewState extends State<PickView> {
       getAllData();
     });
 
-    addAspectSubscription = bloc.aspectsToAdd.listen((a) {
+    addAspectStatusSubscription = bloc.addAspectStatus.listen((a) {
       getAllData();
     });
 
@@ -115,7 +115,7 @@ class _PickViewState extends State<PickView> {
   @override
   void dispose() {
     dateSubscription.cancel();
-    addAspectSubscription.cancel();
+    addAspectStatusSubscription.cancel();
     deleteAspectSubscription.cancel();
     super.dispose();
   }

@@ -21,6 +21,7 @@ class _MyAppBarState extends State<MyAppBar> {
   Function onLeftButtonPressed;
   Function onRightButtonPressed;
   bool shouldNextButtonBeVisible;
+  String headerText;
 
   StreamSubscription<DateTime> dateSubscription;
 
@@ -36,10 +37,81 @@ class _MyAppBarState extends State<MyAppBar> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    dateSubscription.cancel();
-    super.dispose();
+  Widget middle() {
+    return Opacity(
+      opacity: widget.tabElement == TabElement.AddDelete ? 0 : 1,
+      child: Container(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              middleText,
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w500,
+                color: MyColors.darkBlue,
+              ),
+            ),
+            Text(date.year.toString(), style: TextStyle(fontWeight: FontWeight.w300, color: MyColors.darkBlue)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget previousButton() {
+    return Opacity(
+      opacity: widget.tabElement == TabElement.AddDelete ? 0 : 1,
+      child: Container(
+        child: FlatButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(
+                Icons.arrow_back_ios,
+                color: MyColors.darkBlue,
+              ),
+              Flexible(
+                child: Text(
+                  leftButtonText,
+                  style: TextStyle(fontSize: 10, color: MyColors.darkBlue, fontWeight: FontWeight.w300),
+                ),
+              ),
+            ],
+          ),
+          onPressed: () => onLeftButtonPressed(),
+        ),
+      ),
+    );
+  }
+
+  Widget nextButton() {
+    return Opacity(
+      opacity: (widget.tabElement == TabElement.AddDelete || shouldNextButtonBeVisible) ? 0 : 1,
+      child: Container(
+        child: FlatButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                rightButtonText,
+                textAlign: TextAlign.right,
+                style: TextStyle(fontSize: 10, color: MyColors.darkBlue, fontWeight: FontWeight.w300),
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: MyColors.darkBlue,
+              ),
+            ],
+          ),
+          onPressed: shouldNextButtonBeVisible ? null : () => onRightButtonPressed(),
+        ),
+      ),
+    );
   }
 
   @override
@@ -51,11 +123,13 @@ class _MyAppBarState extends State<MyAppBar> {
         middleText = "";
         onLeftButtonPressed = null;
         onRightButtonPressed = null;
+        headerText = "Manage the activities to track";
         break;
       case TabElement.Pick:
         leftButtonText = "Previous\nDay";
         rightButtonText = "Next\nDay";
         middleText = "${date.day.toString()} ${monthFormatter.format(date)}";
+        headerText = "Toggle the activities you have done";
         onLeftButtonPressed = () {
           bloc.changeDate(date.add(Duration(days: -1)));
         };
@@ -70,6 +144,7 @@ class _MyAppBarState extends State<MyAppBar> {
         leftButtonText = "Previous\nMonth";
         rightButtonText = "Next\nMonth";
         middleText = "${monthFormatter.format(date)}";
+        headerText = "Monthly counts of activities";
         onLeftButtonPressed = () {
           bloc.changeDate(date.add(Duration(days: -31)));
         };
@@ -94,93 +169,57 @@ class _MyAppBarState extends State<MyAppBar> {
         ],
       ),
       child: SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            previousButton(),
-            middle(),
-            nextButton(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget middle() {
-    return Opacity(
-      opacity: widget.tabElement == TabElement.AddDelete ? 0 : 1,
-      child: Container(
-        padding: EdgeInsets.all(8),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Text(
-              middleText,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
-              ),
-            ),
-            Text(date.year.toString(), style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget previousButton() {
-    return Opacity(
-      opacity: widget.tabElement == TabElement.AddDelete ? 0 : 1,
-      child: Container(
-        child: FlatButton(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-              ),
-              Flexible(
-                child: Text(
-                  leftButtonText,
-                  style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w100),
+            Container(
+              height: 60,
+              color: MyColors.darkBlue,
+              child: Align(
+                alignment: Alignment(-1, 0.2),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: Text(
+                    headerText,
+                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               ),
-            ],
-          ),
-          onPressed: () => onLeftButtonPressed(),
+            ),
+            Offstage(
+              offstage: widget.tabElement == TabElement.AddDelete ? true : false,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: MyColors.lightGrey,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.3),
+                      offset: Offset(0, 2),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    previousButton(),
+                    middle(),
+                    nextButton(),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget nextButton() {
-    return Opacity(
-      opacity: (widget.tabElement == TabElement.AddDelete || shouldNextButtonBeVisible) ? 0 : 1,
-      child: Container(
-        child: FlatButton(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                rightButtonText,
-                textAlign: TextAlign.right,
-                style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w100),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-              ),
-            ],
-          ),
-          onPressed: shouldNextButtonBeVisible ? null : () => onRightButtonPressed(),
-        ),
-      ),
-    );
+  @override
+  void dispose() {
+    dateSubscription.cancel();
+    super.dispose();
   }
 }

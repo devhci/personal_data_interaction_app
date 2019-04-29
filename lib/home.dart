@@ -15,18 +15,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabElement selectedTab;
-  DateTime date;
 
   Animation<Offset> animatedPosition;
   AnimationController animationController;
 
   StreamSubscription<TabElement> selectedTabSubscription;
-  List<Aspect> aspects = [];
 
   @override
   initState() {
-    date = DateTime.now();
-
     selectedTab = TabElement.Pick;
 
     animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 150));
@@ -103,10 +99,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: PreferredSize(
-          child: MyAppBar(tabElement: this.selectedTab),
-          preferredSize: Size.fromHeight(80),
-        ),
+        appBar: selectedTab == TabElement.AddDelete
+            ? PreferredSize(
+                child: MyAppBar(tabElement: this.selectedTab),
+                preferredSize: Size.fromHeight(60),
+              )
+            : PreferredSize(
+                child: MyAppBar(tabElement: this.selectedTab),
+                preferredSize: Size.fromHeight(130),
+              ),
         body: setBodyView(),
         bottomNavigationBar: SlideTransition(
           child: setBottomBar(),

@@ -1,7 +1,6 @@
 import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
 import 'package:personal_data_interaction_app/Screens/screens.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:unique_identifier/unique_identifier.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 
@@ -17,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: {
         'tutorial': (context) => Tutorial(),
         'home': (context) => Home(),

@@ -8,22 +8,71 @@ class Tutorial extends StatefulWidget {
 }
 
 class _TutorialState extends State<Tutorial> {
+  PageController pageController = PageController();
+  int position;
+  static const double _horizontalTextPadding = 20;
+
+  @override
+  void initState() {
+    position = 0;
+    super.initState();
+  }
+
   Container page1() {
     return Container(
-      color: MyColors.darkBlue,
+      color: Colors.lightBlueAccent,
       child: ListView(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(100.0),
+            padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: _horizontalTextPadding),
             child: Text(
               "Hello",
-              style: TextStyle(fontSize: 34, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 60,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-          Text("Welcome to the Good Day app"),
-          Text("According to psychologists, doing pleasant activites is a key factor for happiness."),
-          Text("By actively trying to do things that you enjoy, you can improve their well-being."),
-          Text("So, this is how you can begin to find bliss on a daily basis..."),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "Welcome to the Good Day app",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "According to psychologists, doing pleasant activites is a key factor for happiness.",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "By actively trying to do things that you enjoy, you can improve their well-being.",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "So, this is how you can begin to find bliss on a daily basis...",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -31,13 +80,50 @@ class _TutorialState extends State<Tutorial> {
 
   Container page2() {
     return Container(
-      color: MyColors.lightGrey,
+      color: Colors.amberAccent,
       child: Column(
         children: <Widget>[
-          Text("1. Think about activities that you truly enjoy doing"),
-          Text("2. Create a list of these activities using the app"),
-          Text("3. Everyday, keep track and mark the activities you did"),
-          Text("4. Check all joyful activities you have done every month"),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 120, bottom: 20.0, left: _horizontalTextPadding, right: _horizontalTextPadding),
+            child: Text(
+              "1. Think about activities that you truly enjoy doing",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "2. Create a list of these activities using the app",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "3. Everyday, keep track and mark the activities you did",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "4. Check all joyful activities you have done every month",
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -45,20 +131,42 @@ class _TutorialState extends State<Tutorial> {
 
   Container page3() {
     return Container(
-      color: MyColors.lightGrey,
+      color: Colors.greenAccent,
       child: Column(
         children: <Widget>[
-          Text("If you change your mind, you can always edit yourlist of activities."),
-          Text("You should feel free to do any activity, any day... but it is fine to do nothing too!"),
-          Text("Doing simple and pleasant activities can help on your self-care: just focus on that"),
-          RoundedButton(
-            color: MyColors.darkGrey,
-            text: "Start",
-            onPressed: () {
-              // TODO: set tutorial to true
-              setTutorialCompletion();
-              Navigator.of(context).pushNamed('home');
-            },
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 120, bottom: 20.0, left: _horizontalTextPadding, right: _horizontalTextPadding),
+            child: Text(
+              "If you change your mind, you can always edit your list of activities.",
+//              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "You should feel free to do any activity, any day... but it is fine to do nothing too!",
+//              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: _horizontalTextPadding),
+            child: Text(
+              "Doing simple and pleasant activities can help on your self-care: just focus on that",
+//              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
           ),
         ],
       ),
@@ -67,22 +175,97 @@ class _TutorialState extends State<Tutorial> {
 
   void setTutorialCompletion() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.get("tutorialCompletion") == null) {
-      prefs.setBool("tutorialCompletion", true);
-    }
+    prefs.setBool("tutorialCompletion", true);
     print("tutorial completion has been set to true");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyColors.lightGrey,
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: pageController,
         children: <Widget>[
           page1(),
           page2(),
           page3(),
         ],
       ),
+      persistentFooterButtons: footerButtons(position),
     );
+  }
+
+  List<Widget> footerButtons(int position) {
+    if (position == 0) {
+      return [
+        RoundedButton(
+            text: "Next",
+            color: MyColors.darkGrey,
+            onPressed: () {
+              setState(() {
+                this.position++;
+              });
+              pageController.animateToPage(
+                1,
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 200),
+              );
+            }),
+      ];
+    } else if (position == 1) {
+      return [
+        RoundedButton(
+            text: "Back",
+            color: MyColors.darkGrey,
+            onPressed: () {
+              setState(() {
+                this.position--;
+              });
+              pageController.animateToPage(
+                0,
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 200),
+              );
+            }),
+        RoundedButton(
+            text: "Next",
+            color: MyColors.darkGrey,
+            onPressed: () {
+              setState(() {
+                this.position++;
+              });
+              pageController.animateToPage(
+                2,
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 200),
+              );
+            })
+      ];
+    } else if (position == 2) {
+      return [
+        RoundedButton(
+            text: "Back",
+            color: MyColors.darkGrey,
+            onPressed: () {
+              setState(() {
+                this.position--;
+              });
+              pageController.animateToPage(
+                1,
+                curve: Curves.ease,
+                duration: Duration(milliseconds: 200),
+              );
+            }),
+        RoundedButton(
+            text: "Start",
+            color: MyColors.darkGrey,
+            onPressed: () {
+              setTutorialCompletion();
+              Navigator.of(context).pushNamed('home');
+            })
+      ];
+    }
+    return [Container()];
   }
 }

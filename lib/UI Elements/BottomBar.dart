@@ -135,13 +135,13 @@ class _BottomBarState extends State<BottomBar> {
             Padding(
               padding: const EdgeInsets.all(6.0),
               child: Icon(
-                Icons.timeline,
+                Icons.sort,
                 color: MyColors.darkGrey,
                 size: 35,
               ),
             ),
             Text(
-              "Track",
+              "Charts",
               style: TextStyle(color: MyColors.darkBlue),
             )
           ],

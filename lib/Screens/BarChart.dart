@@ -47,7 +47,6 @@ class _ChartState extends State<Chart> {
     });
 
     _loading = true;
-    // TODO: download aspects
     getAllData();
 
     super.initState();
@@ -64,7 +63,7 @@ class _ChartState extends State<Chart> {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: count, //aspect.dates.length,
+        itemCount: count,
         itemBuilder: (BuildContext context, int index) {
           if (index == count - 1) {
             return Padding(

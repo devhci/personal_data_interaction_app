@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
 import 'package:personal_data_interaction_app/aspect.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
-import 'package:personal_data_interaction_app/main_devender.dart';
-import 'dart:async';
 import 'package:personal_data_interaction_app/blocs.dart';
+import 'package:flutter/material.dart';
+import 'dart:async';
 
 class Chart extends StatefulWidget {
   @override
@@ -86,7 +85,7 @@ class _ChartState extends State<Chart> {
             return Padding(
               padding: const EdgeInsets.all(1.0),
               child: Container(
-                width: (MediaQuery.of(context).size.width - 100) / 31,
+                width: (MediaQuery.of(context).size.width - 140) / 31,
                 decoration: BoxDecoration(color: aspectColor),
               ),
             );
@@ -98,52 +97,58 @@ class _ChartState extends State<Chart> {
 
   Widget barCellBuilder(BuildContext context, int index) {
     int count = 0;
-
     for (DateTime aspectDate in aspects[index].dates) {
       if (aspectDate.month == this.date.month && aspectDate.year == this.date.year) {
         count++;
       }
     }
 
+    // If there are no dates in the given month
     if (count == 0) {
-      // If there are no dates in the given month
       return Container();
     }
 
-    return GestureDetector(
-//      onTap: () {
-//        Navigator.of(context).push(
-//          MaterialPageRoute(
-//            builder: (context) => MyHomePage(
-//                  title: aspects[index].name,
-//                  dateTime: date,
-//                ),
-//          ),
-//        );
-//      },
-      child: Container(
-          height: 80,
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment(-1, 0),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    aspects[index].name,
-                    style: TextStyle(fontSize: 18),
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              height: 80,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment(-1, 0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        aspects[index].name,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
                   ),
-                ),
+                  bar(count, aspects[index].color),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: Divider(
+                      height: 1,
+                    ),
+                  )
+                ],
               ),
-              bar(count, aspects[index].color),
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: Divider(
-                  height: 1,
-                ),
-              )
-            ],
-          )),
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              bloc.sendSelectedAspectName(aspects[index].name);
+            },
+            icon: Icon(
+              Icons.calendar_today,
+              color: MyColors.darkGrey,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

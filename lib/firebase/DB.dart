@@ -1,6 +1,5 @@
 import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
 
 class DB {

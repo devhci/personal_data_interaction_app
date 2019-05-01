@@ -3,10 +3,8 @@ import 'package:personal_data_interaction_app/UI Elements/ui_elements.dart';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:personal_data_interaction_app/blocs.dart';
-import '../aspect.dart';
 import 'package:personal_data_interaction_app/firebase/DB.dart';
 import 'package:personal_data_interaction_app/util/util.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AddNewAspectCell extends StatefulWidget {
   @override

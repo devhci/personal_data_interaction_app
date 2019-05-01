@@ -3,10 +3,6 @@ import 'UI Elements/ui_elements.dart';
 import 'package:personal_data_interaction_app/Screens/screens.dart';
 import 'dart:async';
 import 'blocs.dart';
-import 'aspect.dart';
-import 'package:personal_data_interaction_app/util/util.dart';
-import 'package:unique_identifier/unique_identifier.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -15,11 +11,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabElement selectedTab;
+  String selectedAspectName;
 
   Animation<Offset> animatedPosition;
   AnimationController animationController;
 
   StreamSubscription<TabElement> selectedTabSubscription;
+  StreamSubscription<String> selectedAspectNameSubscription;
 
   @override
   initState() {
@@ -64,7 +62,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             animationController.reverse();
           });
           break;
+        case TabElement.Calendar:
+          setState(() {
+            selectedTab = TabElement.Calendar;
+          });
+          break;
       }
+    });
+
+    selectedAspectNameSubscription = bloc.selectedAspectName.listen((name) {
+      setState(() {
+        selectedAspectName = name;
+      });
     });
 
     super.initState();
@@ -90,6 +99,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget setBodyView() {
     if (selectedTab == TabElement.Track) {
       return Chart();
+    }
+    if (selectedTab == TabElement.Calendar) {
+      return Calendar(title: selectedAspectName);
     }
     return PickView(mode: selectedTab);
   }
@@ -120,6 +132,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     selectedTabSubscription.cancel();
+    selectedAspectNameSubscription.cancel();
     super.dispose();
   }
 }

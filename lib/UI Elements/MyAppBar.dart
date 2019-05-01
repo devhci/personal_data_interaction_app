@@ -146,15 +146,31 @@ class _MyAppBarState extends State<MyAppBar> {
         middleText = "${monthFormatter.format(date)}";
         headerText = "Monthly counts of activities";
         onLeftButtonPressed = () {
-          bloc.changeDate(date.add(Duration(days: -31)));
+          bloc.changeDate(DateTime(date.year, date.month - 1, date.day));
         };
         onRightButtonPressed = () {
-          bloc.changeDate(date.add(Duration(days: 31)));
+          bloc.changeDate(DateTime(date.year, date.month + 1, date.day));
         };
         setState(() {
           shouldNextButtonBeVisible = (date.month == DateTime.now().month && date.year == DateTime.now().year);
         });
         break;
+      case TabElement.Calendar:
+        leftButtonText = "Previous\nMonth";
+        rightButtonText = "Next\nMonth";
+        middleText = "${monthFormatter.format(date)}";
+        headerText = "Calendar";
+        onLeftButtonPressed = () {
+          bloc.changeDate(DateTime(date.year, date.month - 1, date.day));
+        };
+        onRightButtonPressed = () {
+          bloc.changeDate(DateTime(date.year, date.month + 1, date.day));
+        };
+        setState(() {
+          shouldNextButtonBeVisible = (date.month == DateTime.now().month && date.year == DateTime.now().year);
+        });
+        break;
+
     }
 
     return Container(
